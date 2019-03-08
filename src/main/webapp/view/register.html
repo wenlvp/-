@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
+    <script type="text/javascript" src="js/plug-in.js" ></script>
+</head>
+<body>
+<div style="margin: 45px;margin-left: 40%;margin-top: 75px;">
+    <input class="text" id="empId" type="text" placeholder="请输入账号" />
+</div>
+<div style="margin: 45px;margin-left: 40%;">
+    <input class="text" id="pwd" type="password" placeholder="请输入密码" />
+</div>
+<div style="margin: 45px;margin-left: 40%;">
+    <input class="btn" id="btnLogin" type="button" onclick="register()" value="注册" />
+</div>
+<script>
+    function register(){
+        $.ajax({
+
+            url:"http://127.0.0.1:8080/project/user/register",
+            data:{
+                userId : $("#empId").val(),
+                pwd : $("#pwd").val()
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            type:"post",
+            dataType:"json",
+            success:function(data){
+                if(data.success){
+                    $.Pop(data.message,'alert',function(){goLogin()});
+
+                }else{
+                    $.Pop(data.message,'alert',false);
+                }
+
+            },
+            error: function() {
+                $.Pop('登录发生异常','alert',false);
+            }
+
+        });
+    }
+    function goLogin() {
+        window.location.href = "login.html";
+    }
+</script>
+</body>
+</html>

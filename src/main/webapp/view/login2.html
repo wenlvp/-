@@ -1,0 +1,106 @@
+<!DOCTYPE html >
+
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
+    <script type="text/javascript" src="js/plug-in.js" ></script>
+    <title></title>
+    <style type="text/css">
+        .title{
+            font-size: 65px;
+            margin-left: 38%;
+            color: blue;
+        }
+
+        .text{
+            align-content: center;
+            height: 43px;
+            width: 300px;
+            border-radius: 5%;
+            font-size: 22px;
+        }
+        .btn{
+            align-content: center;
+            height: 43px;
+            width: 150px;
+            border-radius: 5%;
+            font-size: 23px;
+            background-color:#D58512;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .main{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 750px;
+            width: 100%;
+            background-color: #D9EDF7;
+        }
+    </style>
+
+
+</head>
+<body>
+<form>
+    <div class="main">
+        <div>
+            <p class="title"><b><i>新闻发布系统</i></b></p>
+        </div>
+        <div>
+            <div style="margin: 45px;margin-left: 40%;margin-top: 75px;">
+                <input class="text" id="empId" type="text" placeholder="请输入账号" />
+            </div>
+            <div style="margin: 45px;margin-left: 40%;">
+                <input class="text" id="pwd" type="password" placeholder="请输入密码" />
+            </div>
+            <div style="margin: 45px;margin-left: 40%;">
+                <input class="btn" id="btnLogin" type="button" onclick="login()" value="登录" />
+                <input class="btn" id="btnRegister" type="button" onclick="register()" value="注册" />
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+<script type="text/javascript" >
+
+    function login(){
+        $.ajax({
+
+            url:"http://127.0.0.1:8080/project/user/login",
+            data:{
+                userId : $("#empId").val(),
+                pwd : $("#pwd").val()
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            type:"post",
+            dataType:"json",
+            success:function(data){
+                if(data.success){
+                    //window.location.href="menu.html?action=" + info;
+                    window.location.href = "homepage.html";
+                }else{
+
+                }
+
+            },
+            error: function() {
+                $.Pop('登录发生异常','alert',false);
+            }
+
+        });
+    }
+    function register(){
+        window.location.href = "register.html";
+    }
+</script>
+</body>
+</html>

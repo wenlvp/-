@@ -1,0 +1,137 @@
+<!DOCTYPE html >
+
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
+    <script type="text/javascript" src="js/plug-in.js" ></script>
+    <title></title>
+    <style type="text/css">
+        .title{
+            font-size: 60px;
+            margin-left: 38%;
+            color: blue;
+        }
+
+        .text{
+            align-content: center;
+            height: 43px;
+            width: 300px;
+            border-radius: 5%;
+            font-size: 22px;
+        }
+        .btn{
+            align-content: center;
+            height: 43px;
+            width: 300px;
+            border-radius: 5%;
+            font-size: 23px;
+            background-color:#D58512;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .btn1{
+            align-content: center;
+            margin-left:12%;
+            margin-top: 0.5%;
+            height: 43px;
+            width: 50%;
+            border-radius: 5%;
+            font-size: 23px;
+            background-color:ghostwhite;
+            color: black;
+            border: none;
+            cursor: pointer;
+        }
+        .main{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            height: 750px;
+            width: 100%;
+            background-color: #D9EDF7;
+        }
+        .biaoti{
+            font-family: 微软雅黑;
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom:1px dashed #CCCCCC;
+            color: #255e95;
+        }
+        .biaoti2{
+            font-family: 微软雅黑;
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom:1px dashed #CCCCCC;
+            color: #255e95;
+            align:center;
+            height:60px;
+        }
+    </style>
+
+
+</head>
+<body>
+<form>
+    <div class="main">
+        <div>
+            <p class="title"><b><i>在线新闻系统</i></b></p>
+        </div>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#cccccc">
+            <tr>
+                <td class="biaoti2">首页</td>
+                <td class="biaoti2">社会</td>
+                <td class="biaoti2">娱乐</td>
+                <td class="biaoti2">军事</td>
+                <td class="biaoti2">体育</td>
+                <td class="biaoti2">财经</td>
+            </tr>
+        </table>
+
+        <form  align="center" name="input" action="html_form_action.php" method="get">
+            <input width="80%" class="btn1" type="text" name="user">
+            <input class="btn" id="btnLogin"  type="submit" value="Submit">
+        </form>
+
+
+
+    </div>
+</form>
+
+<script type="text/javascript" >
+    function login(){
+        $.ajax({
+
+            url:"http://127.0.0.1:8080/project/test/search",
+            data:{
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
+            type:"post",
+            dataType:"json",
+            success:function(data){
+                if (data.login == false) {
+                    $.Pop(data.message,'alert',function () {goLogin()});
+                    if(data.success){
+                        alert(1)
+                    }else{
+
+                    }
+                }
+            },
+            error: function() {
+                $.Pop('登录发生异常','alert',false);
+
+            }
+        });
+    }
+    function goLogin() {
+        window.location.href = "login.html";
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+@charset "UTF-8";
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "Microsoft YaHei", Arial, sans-serif;
+    font-size: 14px;
+}
+.list_dt{
+	
+    background: #333;
+    color: white;
+    background-color:#4E4E4E;
+    width: 95px;
+    padding: 0 40px 0 20px;
+    height: 54px;
+    line-height: 54px;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+    border-bottom: 1px solid #464646;
+}
+.list_dt1{
+	
+    background: #333;
+    color: white;
+    background-color:#4E4E4E;
+    width: 95px;
+    padding: 0 40px 0 20px;
+    height: 60px;
+    line-height: 60px;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: relative;
+    border-bottom: 1px solid #464646;
+    font-size: 25px;
+    
+}
+.list_dt:hover{
+    background: #222;
+}
+.list_dt:hover ._after{
+    display: block;
+    width: 3px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #4285F4;
+}
+#open{
+    background: #222;
+}
+#open ._after{
+    display: block;
+    width: 3px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #4285F4;
+}
+.list_dt_icon{
+    position: absolute;
+    right: 10px;
+    top: 11px;
+    display: block;
+    width: 12px;
+    height: 12px;
+    background: url("../img/off.png") no-repeat;
+    background-size: cover;
+}
+#open .list_dt_icon{
+    background: url("../img/open.png") no-repeat;
+    background-size: cover;
+}
+.list_dd{
+    display: none;
+}
+.list_li{
+    background:aliceblue;
+    list-style-type: none;
+    color: black;
+    width: 95px;
+    padding: 0 30px;
+    height: 34px;
+    line-height: 34px;
+    cursor: pointer;
+    border-bottom: 1px solid #6b6b6b;
+}
+.list_li:hover{
+    background: #4285F4;
+}
+.p_font{
+	font-size: 18px;
+}
