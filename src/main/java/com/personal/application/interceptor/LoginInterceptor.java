@@ -44,14 +44,14 @@ public class LoginInterceptor implements HandlerInterceptor {
             result.setSuccess(true);
             return true;
         }
-        if (CheckUtils.isEmpty(session.getAttribute(LOGIN_ID))){
-            result.setLogin(false);
-            result.setMessage("请先登录");
-            response.setContentType("application/json; charset=utf-8");
-            JSONObject json = (JSONObject) JSONObject.toJSON(result);
-            response.getWriter().write(json.toJSONString());
-            return false;
-        }
+//        if (CheckUtils.isEmpty(session.getAttribute(LOGIN_ID))){
+//            result.setLogin(false);
+//            result.setMessage("请先登录");
+//            response.setContentType("application/json; charset=utf-8");
+//            JSONObject json = (JSONObject) JSONObject.toJSON(result);
+//            response.getWriter().write(json.toJSONString());
+//            return false;
+//        }
         result.setSuccess(true);
         return true;
     }
