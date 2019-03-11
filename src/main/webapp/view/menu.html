@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="css/accordion.css">
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript" src="js/plug-in.js" ></script>
+		<style>
+			.div_title{
+				width: 100%;
+				height:80px;
+				background-color: #a6e1ec;
+			}
+			.menu{
+				float: left;
+				height: 688px;
+				background-color: #4E4E4E;
+			}
+			.p_title{
+				font-size: 35px;
+				align-content: center;
+				position: absolute;
+				left:40%;
+				top: 10px;
+				color: darkorchid;
+			}
+			.font-sty{
+				font-size: 20px;
+				margin-right: 10px;
+			}
+			.font-sty2{
+				font-size: 15px;
+				margin-right: 10px;
+			}
+			.dis{
+				display: none;
+				list-style: none;
+			}
+			#title_info{
+				margin-left: 480px;
+				margin-top: 30px;
+				color: white;
+				font-size: 30px;
+				font-family: "bookman old style";
+			}
+			.dd{
+				display: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+			<div class="div_title">
+				<p class="p_title">新闻发布系统</p>
+				<table id="user" style="margin-left: 1250px">
+
+				</table>
+			</div>
+			<div style="position: absolute;height: 60px;right: 50px;width: 100px;"  >
+
+			</div>
+		</div>
+		<a id="homepage" target="frm" href="homepage.html" style="display: none" ></a>
+		<div id="divpage" style="float: left;width: 1363px;margin-left: 158px ">
+			<div>
+				<iframe id="childFrame" name="frm" width="100%" height="650px" frameborder="0" style="">
+
+				</iframe>
+			</div>
+		</div>
+
+		<script>
+			$(function(){
+                $("#homepage")[0].click();
+                judgeLogin();
+			});
+			function judgeLogin(){
+                $.ajax({
+                    type:"post",
+                    url: "http://127.0.0.1:8080/project/user/judgeLogin",
+                    async:true,
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    data:{
+                    },
+                    success:function(data){
+                        if (data.success){
+                            $("#user").empty();
+                            var tbody ="";
+                            tbody +="<tr>";
+                            tbody += "<td style='width: 45px'><a>"+ data.data+"</a></td>";
+                            tbody += "<td style='width: 45px'><a>退出</a></td>";
+                            $("#user").append(tbody);
+                        }else{
+                            $("#user").empty();
+                            var tbody ="";
+                            tbody +="<tr>";
+                            tbody += "<td style='width: 45px'><a onclick='openLogin()'>登录</a></td>";
+                            tbody += "<td style='width: 45px'><a onclick='register()'>注册</a></td>";
+                            $("#user").append(tbody);
+                        }
+
+                    },
+                    error: function() {
+                        $.Pop("发生异常",'alert',false);
+                    }
+                });
+			}
+	function login(){
+		$.ajax({
+
+			url:"http://127.0.0.1:8080/project/user/login",
+			data:{
+				userId : $("#empId").val(),
+				pwd : $("#pwd").val()
+			},
+			xhrFields: {
+				withCredentials: true
+			},
+			crossDomain: true,
+			type:"post",
+			dataType:"json",
+			success:function(data){
+				if(data.success){
+                    judgeLogin();
+				}else{
+
+				}
+
+			},
+			error: function() {
+				$.Pop('登录发生异常','alert',false);
+			}
+
+		});
+	}
+	function openLogin(){
+			    window.open("login.html","登录","height=350, width=550, top=200, left=500");
+	}
+	function register(){
+		window.location.href = "register.html";
+	}
+			function getUrlParam(name) {//a标签跳转获取参数
+              var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+         var r = window.location.search.substr(1).match(reg);
+         if(r!=null)return  unescape(r[2]); return null;
+            }
+			 $(".list_dt").on("click",function () {
+            $('.list_dd').stop();
+            $(this).siblings("dt").removeAttr("id");
+            if($(this).attr("id")=="open"){
+                $(this).removeAttr("id").siblings("dd").slideUp();
+            }else{
+                $(this).attr("id","open").next().slideDown().siblings("dd").slideUp();
+            }
+        });
+		</script>
+	</body>
+</html>

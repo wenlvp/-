@@ -1,8 +1,11 @@
 package com.personal.application.controller;
 
 import com.personal.application.VO.ResultVO;
+import com.personal.application.common.Constant;
 import com.personal.application.pojo.UserInfo;
 import com.personal.application.service.UserService;
+import com.personal.application.util.CheckUtils;
+import com.personal.application.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +19,18 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserService userService;
+    @PostMapping("judgeLogin")
+    public ResultVO judgeLogin( HttpServletRequest request){
+        ResultVO resultVO = new ResultVO();
+        HttpSession session = request.getSession();
+        if (CheckUtils.isEmpty(session.getAttribute(Constant.LOGIN_ID))){
+            resultVO.setSuccess(false);
+        }else {
+            resultVO.setSuccess(true);
+            resultVO.setData(session.getAttribute(Constant.LOGIN_ID).toString());
+        }
+        return resultVO;
+    }
     @PostMapping("login")
     public ResultVO login(@RequestParam(value = "userId") String userId,
                           @RequestParam(value = "pwd") String pwd,
@@ -26,7 +41,6 @@ public class UserController {
         if(userInfo.isPresent()){
             String password = userInfo.get().getPassword();
             session.setAttribute("userId",userId);
-            System.out.println(session.getAttribute("userId"));
             if(password.equals(pwd)){
                 resultVO.setSuccess(true);
             }

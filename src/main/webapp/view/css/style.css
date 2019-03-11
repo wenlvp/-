@@ -1,0 +1,144 @@
+.form-control1 {
+  font-size: 20px;
+  line-height: 24px;
+  padding: 5px 11px;
+  height: auto;
+}
+
+.btn-sure{
+				height: 46px;
+				width: 135px;
+				border-top-left-radius: 5px;
+				border-top-right-radius: 5px;
+				border-bottom-left-radius: 5px;
+				border-bottom-right-radius: 5px;
+				border: none;
+				background-color: #0072B5;
+				color: white;
+				cursor: pointer;
+				font-size: 25px;
+			}
+			.btn-con{
+				height: 36px;
+				width: 87px;
+				border-radius: 2px;
+				border: none;
+				background-color: #0072B5;
+				color: white;
+				cursor: pointer;
+				font-size: 20px;
+				margin: 10px;
+				float: right;
+			}
+			.btn-con2{
+				height: 36px;
+				width: 87px;
+				border-radius: 2px;
+				border: none;
+				background-color: #0072B5;
+				color: white;
+				cursor: pointer;
+				font-size: 20px;
+			}
+.model{
+	display: none;
+	overflow: auto;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1050;
+	-webkit-overflow-scrolling: touch;
+	outline: 0;
+}
+.fade{
+	opacity: 0;
+	-webkit-transition: opacity .15s linear;
+	transition: opacity .15s linear;
+}
+@media only screen and (min-width:768px ) {
+	.model-dialog{
+		width: 600px;
+		margin: 60px auto;
+	}
+}
+
+.model-header {
+	padding: 15px;
+	border-bottom: 1px solid #E5E5E5;
+	min-height: 16.4285714px;
+}
+.model-header .close{
+	margin-top: -2px;
+}
+.moder-body{
+	position: relative;
+	padding: 40px;
+}
+.model-footer{
+	margin-top: 15px;
+	padding:  19px 20px 20px;
+	text-align: right;
+	border-top: 1px solid #E5E5E5;
+}
+.model-title{
+	margin : 0;
+	line-height: 1.4287143;
+}
+.the-box{
+	padding :5px;
+	margin-bottom: 5px;
+	background: #fff;
+	border: 1px solid #D5DBDB;
+	position: relative;
+}
+
+			.txt{
+				height: 28px;
+				width: 165px;
+				
+				border: 1px solid #444444;
+				border-top-left-radius: 5px;
+				border-top-right-radius: 5px;
+				border-bottom-left-radius: 5px;
+				border-bottom-right-radius: 5px;
+			}
+			.lab{
+				font-size: 19px;
+			}
+			.icon-rounded{
+	border-radius: 5px;
+	text-align: center;
+	display: inline-block;
+}
+.icon-xs{
+	width: 30px;
+	height: 30px;
+	padding: 7px 0;
+}
+.div-btn{
+	float: right;
+}
+.div-btn:after{
+   height: 0;
+	display: block;
+	clear: both;
+}
+	.mar-l1{
+			margin-left:10px;
+		}	
+		
+		.mar-l4{
+			margin-left:40px;
+		}	
+
+.mar-l8{
+			margin-left:80px;
+		}	
+		.mar-r8{
+			margin-right:80px;
+		}	
+		.mar-t1{
+			margin-top: 10px;
+		}
