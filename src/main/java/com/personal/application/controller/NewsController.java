@@ -17,9 +17,13 @@ public class NewsController {
     @Autowired
     private NewsService newsService;
     @PostMapping("find")
-    public ResultVO findNewsList(@RequestParam(value = "newsType",required = false) Integer newsType){
+    public ResultVO findNewsList(@RequestParam(value = "newsType",required = false) Integer newsType,
+                                 @RequestParam(value = "title",required = false) String title,
+                                 @RequestParam(value = "pageSize",required = false) Integer pageSize,
+                                 @RequestParam(value = "pageIndex",required = false) Integer pageIndex){
         ResultVO resultVO = new ResultVO();
-        List<News> newsList = newsService.findNewsList(newsType);
+        int startRow = (pageIndex-1) * pageSize ;
+        List<News> newsList = newsService.findNewsList(newsType,title,startRow,pageSize);
         resultVO.setData(newsList);
         resultVO.setSuccess(true);
         return  resultVO;
@@ -29,6 +33,17 @@ public class NewsController {
     public ResultVO findNewsListById(@RequestParam(value = "newsId") Integer newsId){
         ResultVO resultVO = new ResultVO();
         List<News> newsList = newsService.findNewsListById(newsId);
+        resultVO.setData(newsList);
+        resultVO.setSuccess(true);
+        return  resultVO;
+    }
+
+    @PostMapping("findAudit")
+    public ResultVO findAuditNewsList(@RequestParam(value = "pageSize",required = false) Integer pageSize,
+                                      @RequestParam(value = "pageIndex",required = false) Integer pageIndex){
+        ResultVO resultVO = new ResultVO();
+        int startRow = (pageIndex-1) * pageSize ;
+        List<News> newsList = newsService.findAuditNewsList(startRow,pageSize);
         resultVO.setData(newsList);
         resultVO.setSuccess(true);
         return  resultVO;

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/page_register.css" />
+    <script type="text/javascript" src="js/pagination.js" ></script>
+    <script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
+    <script type="text/javascript" src="js/plug-in.js" ></script>
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <div style="margin-bottom: 20px;">
+    </div>
+    <div style="height: 55px;">
+        <input id="btn_clear" class="btn-con" type="button" value="清空" onclick="txtClear()">
+        <input id="btn_search" class="btn-con" type="button" value="检索" onclick="search()">
+    </div>
+    <div class="the-box">
+        <div class="table-responsive">
+            <table id="table_example" class="table" border="1" style="text-align: center;border-color: #B0B9B8;">
+                <thead class="the-box">
+                <tr >
+                    <td>序号</td>
+                    <td>标题</td>
+                    <td>发布人</td>
+                    <td>类型</td>
+                    <td>时间</td>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div class="row ">
+                <div class="page-container"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    var pageSize = 10;
+    var dataCount = 0;
+    $(function(){
+        findAuditInfo(1);
+        paging();
+    });
+    function search(){
+        findAuditInfo(1);
+        paging();
+    }
+    function findAuditInfo(pageIndex){
+        $.ajax({
+            type:"post",
+            url:"http://127.0.0.1:8080/project/news/findAudit",
+            async:false,
+            xhrFields: {
+                withCredentials: true
+            },
+            dataType:"json",
+            data:{
+                pageSize : pageSize,
+                pageIndex :pageIndex
+            },
+            success:function(data){
+                $("#table_example tbody").empty();
+                var tbody = "";
+                var backColor = "";
+                if (data.success){
+                    var no= pageSize *(pageIndex-1)+1
+                    $.each(data.data, function(i,o) {
+                        if(i%2==0){
+                            backColor="#E0FFFF";
+                        }else{
+                            backColor = "white";
+                        }
+                        if(i < data.data.length - 1){
+                            tbody += "<tr style='background-color:"+ backColor+"'>";
+                            tbody += "<td><nobr><a href=''>"+ (no+i)+"</a></nobr></td>";
+                            tbody += '<td><nobr>' + o.title + '</nobr></td>';
+                            tbody += '<td><nobr>' + o.userId+ '</nobr></td>';
+                            tbody += '<td><nobr>' + o.newsTypeName + '</nobr></td>';
+                            tbody += '<td><nobr>' + o.pubTime + '</nobr></td>';
+
+                            tbody += '</tr>';
+                        }else{
+                            dataCount = parseInt(o.newsId);
+
+                        }
+                    });
+                }
+                $("#table_example tbody").append(tbody);
+            },
+            error: function() {
+                $.Pop("查询发生异常",'alert',false);
+            }
+
+        });
+    }
+    function paging(){
+        const pager = new Pagination('.page-container', {
+            pageSize: pageSize,
+            autoLoad: true,
+            unit: '条',
+            toPage: function (index, _pageSize) {
+                // 设置记录总数，用于生成分页HTML内容
+                if (index === 0 || _pageSize)
+                    this.updateCount(dataCount, _pageSize)
+                if(_pageSize !=null){
+                    pageSize = parseInt(_pageSize);
+                }
+                findAuditInfo(index+1);
+            }
+        })
+
+    }
+    function txtClear(){
+        $("#txt_lease_id").val("");
+        $("#txt_lease_type").val("");
+        $("#before_time").val("");
+        $("#late_time").val("");
+    }
+</script>
+</body>
+</html>

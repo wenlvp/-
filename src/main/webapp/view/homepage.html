@@ -3,7 +3,10 @@
 <html>
 <head>
     <meta charset="UTF-8">
-
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/page_register.css" />
+    <script type="text/javascript" src="js/pagination.js" ></script>
     <script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
     <script type="text/javascript" src="js/plug-in.js" ></script>
     <title></title>
@@ -88,7 +91,7 @@
         </table>
 
         <form  align="center" name="input" action="html_form_action.php" method="get">
-            <input width="80%" class="btn1" type="text" name="user">
+            <input id="title" width="80%" class="btn1" type="text" name="user">
             <input class="btn" id="btnLogin"  type="submit" value="Submit">
         </form>
       <div>
@@ -107,23 +110,28 @@
 
 <script type="text/javascript" >
     const url ="http://127.0.0.1:8080/";
+    var pageSize = 10;
+    var dataCount = 0;
     $(function(){
-        findNewsList();
-
+        findNewsList(1);
+        paging()
     });
     function goLogin() {
         window.location.href = "login.html";
     }
-    function findNewsList(type){
+    function findNewsList(pageIndex,type){
         $.ajax({
             type:"post",
             url: "http://127.0.0.1:8080/project/news/find",
-            async:true,
+            async:false,
             xhrFields: {
                 withCredentials: true
             },
             data:{
-                newsType : type
+                newsType : type,
+                title : $("#title").val(),
+                pageSize : pageSize,
+                pageIndex :pageIndex
             },
             success:function(data){
                 if (data.success){
@@ -131,15 +139,20 @@
                     var tbody="";
                     var info = data.data;
                     $.each(info, function(i,o) {
-                        tbody += "<tr>";
-                        tbody += "<td rowspan=\"3\">"+o.newsPicture+"</td>"
-                        tbody += "<td >";
-                        tbody += "<table >" ;
-                        tbody +=    "<tr><a href='news_detail.html?newsId='"+o.newsId+">"+ o.title+"</a></tr>" ;
-                        tbody +=    "<tr><p>"+o.pubTime+"-"+o.newsType +"-"+o.userId+"- 阅"+o.readNum+"</p></tr>" ;
-                        tbody +=   "<tr><p>"+o.content+"</p></tr>" ;
-                        tbody +=   "</table>";
-                        tbody += "</td></tr>";
+                        if(i < info.length -1){
+                            tbody += "<tr>";
+                            tbody += "<td rowspan=\"3\">"+o.newsPicture+"</td>"
+                            tbody += "<td >";
+                            tbody += "<table >" ;
+                            tbody +=    "<tr><a href='news_detail.html?newsId='"+o.newsId+">"+ o.title+"</a></tr>" ;
+                            tbody +=    "<tr><p>"+o.pubTime+"-"+o.newsType +"-"+o.userId+"- 阅"+o.readNum+"</p></tr>" ;
+                            tbody +=   "<tr><p>"+o.content+"</p></tr>" ;
+                            tbody +=   "</table>";
+                            tbody += "</td></tr>";
+                        }else{
+                            dataCount = parseInt(o.newsId);
+                        }
+
                     });
                     $("#table_example tbody").append(tbody);
                 }else{
@@ -151,6 +164,23 @@
                 $.Pop("发生异常",'alert',false);
             }
         });
+    }
+    function paging(){
+        const pager = new Pagination('.page-container', {
+            pageSize: pageSize,
+            autoLoad: true,
+            unit: '条',
+            toPage: function (index, _pageSize) {
+                // 设置记录总数，用于生成分页HTML内容
+                if (index === 0 || _pageSize)
+                    this.updateCount(dataCount, _pageSize)
+                if(_pageSize !=null){
+                    pageSize = parseInt(_pageSize);
+                }
+                findNewsList(index+1);
+            }
+        })
+
     }
 </script>
 </body>

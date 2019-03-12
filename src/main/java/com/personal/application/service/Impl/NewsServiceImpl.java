@@ -15,12 +15,19 @@ public class NewsServiceImpl implements NewsService {
 
 
     @Override
-    public List<News> findNewsList(Integer newsType) {
-        return newsMapper.findNewsList(newsType);
+    public List<News> findNewsList(Integer newsType,String title,Integer startRow,Integer pageSize) {
+        return newsMapper.findNewsList(newsType,title,startRow,pageSize);
     }
 
     @Override
     public List<News> findNewsListById(Integer newsId) {
         return newsMapper.findNewListById(newsId);
     }
+
+    @Override
+    public List<News> findAuditNewsList(Integer startRow, Integer pageSize) {
+         return newsMapper.findAuditNewsList(startRow,pageSize);
+    }
+
+
 }
