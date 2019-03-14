@@ -89,7 +89,7 @@ public interface NewsMapper {
             "\tn.news_id,\n" +
             "\tu.user_name AS 'userId',\n" +
             "\tn.title,\n" +
-            "\tn.pub_time,\n" +
+            "\t n.pub_time,\n" +
             "\tn.content,\n" +
             "\tn.read_num,\n" +
             "\tn.comment_num,\n" +

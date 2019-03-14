@@ -2,17 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/page_register.css" />
+    <script type="text/javascript" src="js/pagination.js" ></script>
+    <script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
+    <script type="text/javascript" src="js/plug-in.js" ></script>
     <title>Title</title>
 </head>
 <body>
 <div>
-    <table id="table_example" class="table" style="text-align: center;border-color: #B0B9B8;">
-        <thead class="the-box">
-        </thead>
-        <tbody>
-
-        </tbody>
-    </table>
+    <div>
+        <label>标题</label>
+    </div>
+    <div>
+        <label>时间</label>
+        <label>类型</label>
+    </div>
+    <div>
+        <label>发布者</label>
+    </div>
+    <div>
+        <p></p>
+    </div>
 </div>
+<script>
+    $(function(){
+    });
+function getUrlParam(name) {//a标签跳转获取参数
+    var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if(r!=null) return  unescape(r[2]); return null;
+}
+
+</script>
 </body>
 </html>

@@ -11,6 +11,17 @@
     <script type="text/javascript" src="js/plug-in.js" ></script>
     <title></title>
     <style type="text/css">
+        .table_home {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .table_home > tbody > tr > th{
+            padding: 2px 3px 2px 3px;
+            line-height: 1.42857143;
+            vertical-align: middle;
+            border-top: 1px solid #ddd;
+        }
         .title{
             font-size: 60px;
             margin-left: 38%;
@@ -56,13 +67,7 @@
             width: 100%;
             background-color: #D9EDF7;
         }
-        .biaoti{
-            font-family: 微软雅黑;
-            font-size: 20px;
-            font-weight: bold;
-            border-bottom:1px dashed #CCCCCC;
-            color: #255e95;
-        }
+
         .biaoti2{
             font-family: 微软雅黑;
             font-size: 20px;
@@ -79,8 +84,8 @@
 <body>
 <form>
     <div class="main">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" bgcolor="#cccccc">
-            <tr>
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
+            <tr >
                 <td class="biaoti2">首页</td>
                 <td class="biaoti2">社会</td>
                 <td class="biaoti2">娱乐</td>
@@ -90,15 +95,13 @@
             </tr>
         </table>
 
-        <form  align="center" name="input" action="html_form_action.php" method="get">
+
             <input id="title" width="80%" class="btn1" type="text" name="user">
             <input class="btn" id="btnLogin"  type="submit" value="Submit">
-        </form>
+
       <div>
-          <table id="table_example" class="table" style="text-align: center;border-color: #B0B9B8;">
-              <thead class="the-box">
-              </thead>
-              <tbody>
+          <table id="table_example" class="table_home" style="text-align: center;border: 0px">
+              <tbody style="border: 0px">
 
               </tbody>
           </table>
@@ -141,14 +144,13 @@
                     $.each(info, function(i,o) {
                         if(i < info.length -1){
                             tbody += "<tr>";
-                            tbody += "<td rowspan=\"3\">"+o.newsPicture+"</td>"
-                            tbody += "<td >";
-                            tbody += "<table >" ;
-                            tbody +=    "<tr><a href='news_detail.html?newsId='"+o.newsId+">"+ o.title+"</a></tr>" ;
-                            tbody +=    "<tr><p>"+o.pubTime+"-"+o.newsType +"-"+o.userId+"- 阅"+o.readNum+"</p></tr>" ;
-                            tbody +=   "<tr><p>"+o.content+"</p></tr>" ;
-                            tbody +=   "</table>";
-                            tbody += "</td></tr>";
+                            tbody += "<td rowspan=\"4\">"+o.newsPicture+"</td>"
+                            tbody += "<td><a style='cursor:pointer;text-decoration:none;' href='news_detail.html?action="+o.newsId+"'>" + o.title + "</a></td>";
+                            tbody += "</tr>" ;
+                            tbody += "<tr><td><p>"+getDate(o.pubTime)+"-"+o.newsTypeName +"-"+o.userId+"- 阅"+o.readNum+"</p></td></tr>" ;
+                            tbody += "<tr><td rowspan=\"2\"><p>"+o.content+"</p></td></tr>" ;
+                            tbody +="<tr><td></td></tr>"
+
                         }else{
                             dataCount = parseInt(o.newsId);
                         }
@@ -181,6 +183,14 @@
             }
         })
 
+    }
+    function getDate(time){
+        var date = new Date(time);
+        var year = date.getFullYear();
+        var month = date.getMonth()+1;
+        var day = date.getDate();
+        var returnTime = year + "-" + month+"-" + day;
+        return returnTime;
     }
 </script>
 </body>
