@@ -9,24 +9,24 @@
     <title></title>
     <style type="text/css">
         .title{
-            font-size: 35px;
+            font-size: 65px;
             margin-left: 38%;
             color: blue;
         }
 
         .text{
             align-content: center;
-            height: 37px;
-            width: 260px;
+            height: 43px;
+            width: 300px;
             border-radius: 5%;
             font-size: 22px;
         }
         .btn{
             align-content: center;
-            height: 33px;
-            width: 100px;
+            height: 43px;
+            width: 150px;
             border-radius: 5%;
-            font-size: 20px;
+            font-size: 23px;
             background-color:#D58512;
             color: white;
             border: none;
@@ -34,7 +34,10 @@
         }
         .main{
             position: absolute;
-            width: 500px;
+            top: 0px;
+            left: 0px;
+            height: 750px;
+            width: 100%;
             background-color: #D9EDF7;
         }
     </style>
@@ -45,17 +48,18 @@
 <form>
     <div class="main">
         <div>
-            <p class="title"><b><i>登录</i></b></p>
+            <p class="title"><b><i>新闻发布系统</i></b></p>
         </div>
         <div>
-            <div style="margin: 25px;margin-left: 40%;margin-top: 30px;">
+            <div style="margin: 45px;margin-left: 40%;margin-top: 75px;">
                 <input class="text" id="empId" type="text" placeholder="请输入账号" />
             </div>
-            <div style="margin: 25px;margin-left: 40%;">
+            <div style="margin: 45px;margin-left: 40%;">
                 <input class="text" id="pwd" type="password" placeholder="请输入密码" />
             </div>
-            <div style="margin: 25px;margin-left: 40%;">
+            <div style="margin: 45px;margin-left: 40%;">
                 <input class="btn" id="btnLogin" type="button" onclick="login()" value="登录" />
+
             </div>
 
         </div>

@@ -38,7 +38,7 @@
         .btn{
             align-content: center;
             height: 43px;
-            width: 300px;
+            width: 220px;
             border-radius: 5%;
             font-size: 23px;
             background-color:#D58512;
@@ -84,20 +84,19 @@
 <body>
 <form>
     <div class="main">
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
-            <tr >
-                <td class="biaoti2">首页</td>
-                <td class="biaoti2">社会</td>
-                <td class="biaoti2">娱乐</td>
-                <td class="biaoti2">军事</td>
-                <td class="biaoti2">体育</td>
-                <td class="biaoti2">财经</td>
-            </tr>
+        <table id="news_type" width="100%" border="0" cellspacing="0" cellpadding="0" align="center" >
+
         </table>
+        <div>
+            <select id="sel_info">
+                <option value="1">标题</option>
+                <option value="2">作者</option>
+                <option value="3">内容</option>
+            </select>
+            <input id="title" width="70%" class="btn1" type="text" >
+            <input class="btn" id="btnLogin" type="button" value="搜索">
+        </div>
 
-
-            <input id="title" width="80%" class="btn1" type="text" name="user">
-            <input class="btn" id="btnLogin"  type="submit" value="Submit">
 
       <div>
           <table id="table_example" class="table_home" style="text-align: center;border: 0px">
@@ -112,15 +111,52 @@
 </form>
 
 <script type="text/javascript" >
+    const newsType = "news";
     const url ="http://127.0.0.1:8080/";
     var pageSize = 10;
     var dataCount = 0;
     $(function(){
+        getNewsType();
         findNewsList(1);
         paging()
     });
     function goLogin() {
         window.location.href = "login.html";
+    }
+    function findListByType(type) {
+        findNewsList(1,type);
+    }
+    function getNewsType(){
+        $.ajax({
+            type:"post",
+            url: "http://127.0.0.1:8080/project/dict/bind",
+            xhrFields: {
+                withCredentials: true
+            },
+            data:{
+                type : newsType,
+            },
+            success:function(data){
+                if (data.success){
+                    $("#news_type ").empty();
+                    var tbody="";
+                    var info = data.data;
+                    tbody +="<tr><td><a class='a-point a-size' onclick='findListByType()'>首页</a></td>";
+                    $.each(info, function(i,o) {
+                        tbody += "<td><a class='a-point a-size' onclick="+"'findListByType("+o.dictValue+")'>"+o.dictName+"</a></td>";
+
+                    });
+                    tbody +="</tr>";
+                    $("#news_type").append(tbody);
+                }else{
+                    $.Pop("错误",'alert',false);
+                }
+
+            },
+            error: function() {
+                $.Pop("发生异常",'alert',false);
+            }
+        });
     }
     function findNewsList(pageIndex,type){
         $.ajax({

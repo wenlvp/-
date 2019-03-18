@@ -28,8 +28,14 @@ public interface NewsMapper {
             "<if test ='newsType !=null '>" +
             " and n.news_type = #{newsType}" +
             "</if>" +
-            "<if test ='title !=null '>" +
-            " \tand instr(n.title,#{title})" +
+            "<if test ='selContent !=null and selConditions = 1'  >" +
+            " \tand instr(n.title,#{selContent})" +
+            "</if>" +
+            "<if test ='selContent !=null and selConditions = 2' >" +
+            " \tand instr(u.user_name,#{selContent})" +
+            "</if>" +
+            "<if test ='selContent !=null and selConditions = 3 '>" +
+            " \tand instr(n.content,#{selContent})" +
             "</if>" +
             " order by n.pub_time" +
             " limit #{startRow},#{pageSize})t " +
@@ -53,12 +59,19 @@ public interface NewsMapper {
             "<if test ='newsType !=null '>" +
             " and n.news_type = #{newsType}" +
             "</if>" +
-            "<if test ='title !=null '>" +
-            " \tand instr(n.title,#{title})" +
+            "<if test ='selContent !=null and selConditions = 1'  >" +
+            " \tand instr(n.title,#{selContent})" +
+            "</if>" +
+            "<if test ='selContent !=null and selConditions = 2' >" +
+            " \tand instr(u.user_name,#{selContent})" +
+            "</if>" +
+            "<if test ='selContent !=null and selConditions = 3 '>" +
+            " \tand instr(n.content,#{selContent})" +
             "</if>" +
             "</script>")
     List<News> findNewsList(@Param("newsType") Integer newsType,
-                            @Param("title") String title,
+                            @Param("selConditions") Integer selConditions,
+                            @Param("selContent") String selContent,
                             @Param("startRow") Integer startRow,
                             @Param("pageSize") Integer pageSize);
 
@@ -121,4 +134,58 @@ public interface NewsMapper {
             "</script>")
     List<News> findAuditNewsList(@Param("startRow") Integer startRow,
                                  @Param("pageSize") Integer pageSize);
+
+    @Select("<script>" +
+            " select t.* from " +
+            "(SELECT\n" +
+            "\tn.news_id,\n" +
+            "\tu.user_name AS 'userId',\n" +
+            "\tn.title,\n" +
+            "\tn.pub_time,\n" +
+            "\tn.content,\n" +
+            "\tn.read_num,\n" +
+            "\tn.comment_num,\n" +
+            "\tn.news_picture,\n" +
+            "\td.dict_name AS 'newsTypeName' \n" +
+            "FROM\n" +
+            "\tnews n\n" +
+            "\tLEFT JOIN user_info u ON n.user_id = u.user_id\n" +
+            "\tLEFT JOIN dict d ON d.dict_value = n.news_type \n" +
+            "\tAND d.dict_type = 'news'" +
+            " where n.is_audit = 0" +
+            "<if test ='newsType !=null '>" +
+            " and n.news_type = #{newsType}" +
+            "</if>" +
+            "<if test ='title !=null '>" +
+            " \tand instr(n.title,#{title})" +
+            "</if>" +
+            " order by n.pub_time" +
+            " limit #{startRow},#{pageSize})t " +
+            " union all" +
+            " SELECT\n" +
+            "\t count(n.news_id),\n" +
+            "\tu.user_name AS 'userId',\n" +
+            "\tn.title,\n" +
+            "\tn.pub_time,\n" +
+            "\tn.content,\n" +
+            "\tn.read_num,\n" +
+            "\tn.comment_num,\n" +
+            "\tn.news_picture,\n" +
+            "\td.dict_name AS 'newsTypeName' \n" +
+            "FROM\n" +
+            "\tnews n\n" +
+            "\tLEFT JOIN user_info u ON n.user_id = u.user_id\n" +
+            "\tLEFT JOIN dict d ON d.dict_value = n.news_type \n" +
+            "\tAND d.dict_type = 'news'" +
+            "<if test ='newsType !=null '>" +
+            " and n.news_type = #{newsType}" +
+            "</if>" +
+            "<if test ='title !=null '>" +
+            " \tand instr(n.title,#{title})" +
+            "</if>" +
+            "</script>")
+    List<News> findAllNewsList(@Param("newsType") Integer newsType,
+                               @Param("title") String title,
+                               @Param("startRow") Integer startRow,
+                               @Param("pageSize") Integer pageSize);
 }

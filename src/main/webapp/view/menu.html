@@ -53,9 +53,13 @@
 		<div>
 			<div class="div_title">
 				<p class="p_title">新闻发布系统</p>
-				<table id="user" style="margin-left: 1250px">
+				<div>
+					<a href="login_emp.html">管理员登录</a>
+					<table id="user" style="margin-left: 1250px">
 
-				</table>
+					</table>
+				</div>
+
 			</div>
 			<div style="position: absolute;height: 60px;right: 50px;width: 100px;"  >
 
@@ -90,7 +94,7 @@
                             $("#user").empty();
                             var tbody ="";
                             tbody +="<tr>";
-                            tbody += "<td style='width: 45px'><a>"+ data.data+"</a></td>";
+                            tbody += "<td style='width: 45px'><a id='"+ data.data+"' onclick='jumpUser(this)'>"+ data.data+"</a></td>";
                             tbody += "<td style='width: 45px'><a>退出</a></td>";
                             $("#user").append(tbody);
                         }else{
@@ -108,54 +112,26 @@
                     }
                 });
 			}
-	function login(){
-		$.ajax({
 
-			url:"http://127.0.0.1:8080/project/user/login",
-			data:{
-				userId : $("#empId").val(),
-				pwd : $("#pwd").val()
-			},
-			xhrFields: {
-				withCredentials: true
-			},
-			crossDomain: true,
-			type:"post",
-			dataType:"json",
-			success:function(data){
-				if(data.success){
-                    judgeLogin();
-				}else{
 
-				}
-
-			},
-			error: function() {
-				$.Pop('登录发生异常','alert',false);
-			}
-
-		});
+		function getUrlParam(name) {//a标签跳转获取参数
+		  var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+		  var r = window.location.search.substr(1).match(reg);
+		  if(r!=null)return  unescape(r[2]); return null;
+		}
+		 $(".list_dt").on("click",function () {
+		$('.list_dd').stop();
+		$(this).siblings("dt").removeAttr("id");
+		if($(this).attr("id")=="open"){
+			$(this).removeAttr("id").siblings("dd").slideUp();
+		}else{
+			$(this).attr("id","open").next().slideDown().siblings("dd").slideUp();
+		}
+	});
+	function jumpUser(value){
+	    var userId = value.id;
+        window.location.href = "menu.html?userId="+userId;
 	}
-	function openLogin(){
-			    window.open("login.html","登录","height=350, width=550, top=200, left=500");
-	}
-	function register(){
-		window.location.href = "register.html";
-	}
-			function getUrlParam(name) {//a标签跳转获取参数
-              var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-         var r = window.location.search.substr(1).match(reg);
-         if(r!=null)return  unescape(r[2]); return null;
-            }
-			 $(".list_dt").on("click",function () {
-            $('.list_dd').stop();
-            $(this).siblings("dt").removeAttr("id");
-            if($(this).attr("id")=="open"){
-                $(this).removeAttr("id").siblings("dd").slideUp();
-            }else{
-                $(this).attr("id","open").next().slideDown().siblings("dd").slideUp();
-            }
-        });
 		</script>
 	</body>
 </html>

@@ -136,13 +136,22 @@
 .mar-l8{
 			margin-left:80px;
 		}	
-		.mar-r8{
+.mar-r8{
 			margin-right:80px;
 		}	
-		.mar-t1{
+.mar-t1{
 			margin-top: 10px;
 		}
 
-		.bor{
+.bor{
 			border: none;
 		}
+.a-point{
+	cursor:pointer;
+	text-decoration:none;
+}
+
+.a-size{
+	font-size: 25px;
+	margin-left: 30px;
+}

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
+		<script type="text/javascript" src="js/plug-in.js" ></script>
+		<title></title>
+	</head>
+	<body>
+		<div>
+			<div>
+			<div style="margin-bottom: 10px;margin-top: 15px;">
+				<label class="lab mar-l8">权限编号:</label><input id="role_id" class="txt mar-l1 mar-r8" type="text"  >
+				<label class="lab mar-l8">权限名称:</label><input id="role_name" class="txt mar-l1 mar-r8" type="text"  >
+				<label class="lab mar-l8">描述:</label><input id="description" class="txt mar-l1" type="text" >
+			</div>
+			<div style="height: 55px;" >
+				<input id="btn_clear" class="btn-con" type="button" value="全选" onclick="checkAll()">
+				<input id="btn_search" class="btn-con" type="button" value="取消全选" onclick="checkNone()">
+			</div>
+			<div class="the-box">
+				<div class="table-responsive">
+				<table id="table_example" class="table" border="1" style="text-align: center;border-color: #B0B9B8;">
+					<thead class="the-box">
+						<tr >
+							<td>模块</td>
+							<td><input type="checkbox"></td>
+							<td>功能</td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div  >	
+			<input id="btn_add" style="margin-left: 450px;" class="btn-sure" type="button" value="新增" onclick="addPrivilege()">
+				<input id="btn_change" style="margin-left: 450px;display: none;" class="btn-sure" type="button" value="修改" onclick="changePrivilege()">
+			</div>
+		</div>
+		</div>
+		<script>
+
+			$(function(){
+				searchPrivliege();
+				var action = getUrlParam('action');
+				if(!(action == null || action == "")){	
+					var roleId =action;
+					searchRoleById(roleId);
+					bindMenuCode(roleId);
+					$("#btn_add").css("display","none");
+					$("#btn_change").css("display","block");
+					
+				}
+			
+		});
+		function searchPrivliege(){
+			
+			$.ajax({
+				type:"post",
+				url:"http://127.0.0.1:8080/project/role/find",
+				async:false,
+				xhrFields: { 
+                        withCredentials: true 
+                     }, 
+				dataType:"json",
+				data : {
+					
+				},
+				success:function(data){
+				      $("#table_example tbody").empty();
+				      var tbody = "";
+				      var backColor = "";
+				      var num = 0;
+				      var k=0;
+				      if (data.success){
+				      	var info = data.data;
+				      	$.each(info, function(i,o) {
+				      		
+				      		if(o.menuGroup==1 && i==0)
+				      		{
+				      			
+				      			tbody += "<tr style='background-color:"+ backColor+"'>";
+				      			tbody += '<td><nobr>' + o.moduleName + '</nobr></td>';
+				      			tbody += "<td ><input type='checkbox' id="+ o.moduleCode+"/></td>";
+				      		}
+				      		if(o.menuGroup==1 && i !=0)
+				      		{		
+				      			k++;
+				      			for(j=0;j<6-num;j++){
+				      				tbody+='<td></td>'
+				      			}
+				      			if(k%2==1){
+				      			backColor="#E0FFFF";
+				      		}else{
+				      			backColor = "white";
+				      		}
+				      			tbody +="</tr>"
+				      			tbody += "<tr style='background-color:"+ backColor+"'>";
+				      			tbody += '<td><nobr>' + o.moduleName + '</nobr></td>';
+				      			tbody += "<td ><input type='checkbox' /></td>";
+				      		}
+				      		tbody += "<td><input id="+ o.menuCode+" class="+ o.moduleCode+" name='checkbox' type='checkbox' />"+ o.menuName +"</td>";
+				      		
+				      		num = parseInt(o.menuGroup);
+				      		
+				      	});
+				      	for(j=0;j<6-num;j++){
+				      				tbody+='<td></td>'
+				      			}
+				      	tbody+="</tr>"
+				      	
+				      }else{
+				      	 $.Pop("未检索到数据",'alert',false);
+				      }
+				      $("#table_example tbody").append(tbody);
+				     },
+				error: function() {
+				           $.Pop("检索发生异常",'alert',false);
+				       }
+
+			});
+		}
+		function searchRoleById(roleId){
+			$.ajax({
+				type:"post",
+				url:"http://127.0.0.1:8080/project/role/findById",
+				async:true,
+				xhrFields: { 
+                        withCredentials: true 
+                     }, 
+				dataType:"json",
+				data : {
+					roleId : roleId
+				},
+				success:function(data){
+				     
+				      if (data.success){
+				      	
+				      	var info = data.data;
+				      	
+				      	$("#role_id").val(info.roleId);
+				      	$("#role_name").val(info.roleName);
+				      	$("#description").val(info.description);
+				      	$("#role_id").attr("disabled","disabled");
+				      	$("#role_name").attr("disabled","disabled");
+				      	$("#description").attr("disabled","disabled");
+				      	
+				      }else{
+				      	 $.Pop("未检索到数据",'alert',false);
+				      }
+				     
+				     },
+				error: function() {
+				            $.Pop("检索发生异常",'alert',false);
+				       }
+
+			});
+		}
+		function changePrivilege(){
+			var checkVal = chk();
+			console.log(checkVal);
+			$.ajax({
+				type:"post",
+				url:"http://127.0.0.1:8080/project/role/changePrivilege",
+				async:true,
+				xhrFields: { 
+                        withCredentials: true 
+                     }, 
+				data:{
+					checkVal : checkVal,
+					roleId : $("#role_id").val()
+				},
+				success:function(data){
+				     
+				      if (data.success){
+				      	
+				      	 $.Pop("修改成功",'alert',jump());
+				      	
+				      }else{
+				      	 $.Pop("修改失败",'alert',false);
+				      }
+				     
+				     },
+				error: function() {
+				            $.Pop("修改发生异常",'alert',false);
+				       }
+			});
+		}
+		function addPrivilege(){
+			var checkVal = chk();
+			console.log(checkVal);
+			$.ajax({
+				type:"post",
+				url:"http://127.0.0.1:8080/project/role/addPrivilege",
+				async:true,
+				xhrFields: { 
+                        withCredentials: true 
+                     }, 
+				data:{
+					checkVal : checkVal,
+					roleId : $("#role_id").val(),
+					roleName : $("#role_name").val(),
+					description : $("#description").val()
+				},
+				success:function(data){
+				     
+				      if (data.success){
+				      	
+				      	 $.Pop("新增成功",'alert',jump());
+				      	
+				      	
+				      }else{
+				      	 $.Pop("新增失败",'alert',false);
+				      }
+				     
+				     },
+				error: function() {
+				            $.Pop("新增发生异常",'alert',false);
+				       }
+			});
+		}
+		function jump(){
+			window.location.href = "roleList.html";
+		}
+		function bindMenuCode(roleId){
+			$.ajax({
+				type:"post",
+				url:"http://127.0.0.1:8080/project/role/menucode",
+				async:true,
+				xhrFields: { 
+                        withCredentials: true 
+                     }, 
+				data:{
+				
+					roleId : roleId
+				},
+				success:function(data){			     
+				      if (data.success){
+				      	var info = data.data;
+				      	$.each(info, function(i,o) {
+				      		
+				      		$("#"+o.menuCode).attr("checked",true);
+				      	});
+
+				      }else{
+				      	 $.Pop("错误",'alert',false);
+				      }
+				     
+				     },
+				error: function() {
+				            $.Pop("绑定权限信息发生异常",'alert',false);
+				            
+				       }
+			});
+		}
+		function checkAll(){
+			$(" input[type=checkbox]").attr("checked",true);
+
+		}
+		function checkNone(){
+			$(" input[type=checkbox]").attr("checked",false);
+
+		}
+		//选中checkbox
+		function chk(){ 
+			var obj=document.getElementsByName('checkbox'); //选择所有name="'checkbox'"的对象，返回数组 
+			//取到对象数组后，我们来循环检测它是不是被选中 
+			var s=''; 
+			for(var i=0; i<obj.length; i++){ 
+			if(obj[i].checked)
+			//如果选中，将value添加到变量s中
+			s+=obj[i].id+'△'; 
+			
+			}
+			return s;
+		}
+		function getUrlParam(name) {//a标签跳转获取参数
+              var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+              var r = window.location.search.substr(1).match(reg);
+              if (r != null) return (r[2]); return null;
+            }
+		$("#M01").click(function checkNeed(value){
+			value ="M01";
+			$("input."+value).attr("checked",true);
+		});
+		function checkNeed(value){
+			$("input."+value).attr("checked",true);
+		}
+		</script>
+	</body>
+</html>

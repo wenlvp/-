@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/style.css" />
+		<script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
+		<script type="text/javascript" src="js/plug-in.js" ></script>
+		<title></title>
+		<style>
+			.div_txt
+			{
+				margin: 22px;
+				font-size: 20px;
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div>
+			<div style="position: absolute; left: 30%;" >
+				<div class="div_txt">
+					<label >员工编号:</label>
+					<input class="form-control1"  id="txt_emp_id" type="text" placeholder="请输入员工编号(必填)"/>
+					<label id="lab_emp_id" style="color: red;"></label>
+				</div>
+				<div class="div_txt">
+					<label >员工姓名:</label>
+					<input class="form-control1" id="txt_emp_name" type="text" placeholder="请输入员工姓名(必填)"/>
+					<label id="lab_emp_name" style="color: red;"></label>
+				</div>
+				<div class="div_txt">
+					<label>员工密码:</label>
+					<input class="form-control1" id="txt_password" type="text" placeholder="请输入密码"/>
+					<label id="lab_emp_password" style="color: red;"></label>
+				</div>
+				<div class="div_txt">
+					<label>员工角色:</label>
+					<select class="form-control1"  id="sel_role" style="width: 270px;height: 39px;">
+						<option value="">请选择角色</option>
+					</select>
+					<label id="lab_emp_role" style="color: red;"></label>
+				</div>
+				<div class="div_txt">
+					<label style="margin-left: 15px;">&nbsp;手机号:</label>
+					<input class="form-control1" id="txt_phone" type="text" placeholder="请输入手机号" onchange="confirmPhone(this)"/>
+					<label id="lab_phone" style="color: red;"></label>
+				</div>
+				<div class="div_txt">
+					<label style="margin-left: 25px;">&nbsp;邮&nbsp;箱:</label>
+					<input class="form-control1" id="txt_email" type="text" placeholder="请输入邮箱" onchange="confirmEmail(this)"/>
+					<label id="lab_email" style="color: red;"></label>
+				</div>
+				<div class="div_txt" style="margin-top:28px;">
+					<input class="btn-sure" id="btn_add" style="margin-left:135px;" type="button" value="新增" onClick="conf(1)"/>
+					<input class="btn-sure" style="margin-left:135px;display: none;" id="btn_change" type="button" value="修改" onClick="conf(2)"/>
+				</div>
+	
+			</div>
+		</div>
+         
+		<script>
+			var regPhone = /^1[34578]\d{9}$/;
+			var regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+			//var regEmail = /^1[34578]\d{9}$/;
+			function confirmPhone(obj){
+				
+				if(isEmpty(obj)==false){
+					if(regPhone.test(obj.value)==false){
+						$("#lab_phone").text("手机号格式不正确");
+					}else{
+						$("#lab_phone").text("");
+					}
+				}
+			}
+			function confirmEmail(obj){
+				
+				if(isEmpty(obj)==false){
+					if(regEmail.test(obj.value)==false){
+						$("#lab_email").text("邮箱格式不正确");
+					}else{
+						$("#lab_email").text("");
+					}
+				}
+			}
+			$(function(){
+				bindRole();
+				var action = getUrlParam('action');
+				var a=getUrlParam('a');
+				if(!(action == null || action == "")){	
+					var empId = action;
+					$("#txt_emp_id").attr("disabled","false");
+					searchEmpInfoById(empId);
+					$("#btn_add").css("display","none");
+					$("#btn_change").css("display","block");
+					if(a=="a"){
+						$("#sel_role").attr("disabled","false");
+					}
+				}
+			});
+			function conf(val){
+				var success= true;
+				if(isEmpty($("#txt_emp_name").val())==true){
+					$("#lab_emp_name").text("员工姓名必填");
+					success= false;
+				}
+				if(isEmpty($("#txt_emp_id").val())==true){
+					$("#lab_emp_id").text("员工id必填");
+					success= false;
+				}
+				if(isEmpty($("#txt_password").val())==true){
+					$("#lab_emp_password").text("员工密码必填");
+					success= false;
+				}
+				if(isEmpty($("#sel_role").val())==true){
+					$("#lab_emp_role").text("员工角色必填");
+					success= false;
+				}
+				if(success)
+				{
+					if(val == 1){
+						$.Pop('确定新增吗','confirm',function(){ addEmpInfo()})
+					}else{
+						$.Pop('确定修改吗','confirm',function(){ changeEmpInfo()})
+					}
+				
+				}
+				
+			}
+			function addEmpInfo(){	
+					$.ajax({
+					type:"post",
+					url:"http://127.0.0.1:8080/project/emp/add",
+					async:true,
+					 xhrFields: { 
+                        withCredentials: true 
+                     }, 
+					dataType:"json",
+					data :{
+						empId : $("#txt_emp_id").val(),
+						empName : $("#txt_emp_name").val(),
+						pwd : $("#txt_password").val(),
+						role : $("#sel_role").val(),
+						phone : $("#txt_phone").val(),
+						email : $("#txt_email").val()		
+					},
+					success:function(data){
+						if(data.success){
+							
+                            $.Pop("新增成功",'alert',false)
+							txtClear();
+						}else{
+							 $.Pop(data.errMessage,'alert',false)
+						}			
+					},
+					error:function(){
+						 $.Pop("新增发生异常",'alert',false);
+					}		
+				});	
+			}
+			function changeEmpInfo(){	
+					$.ajax({
+					type:"post",
+					url:"http://127.0.0.1:8080/project/emp/change",
+					async:true,
+					 xhrFields: { 
+                        withCredentials: true 
+                     }, 
+					dataType:"json",
+					data :{
+						empId : $("#txt_emp_id").val(),
+						empName : $("#txt_emp_name").val(),
+						pwd : $("#txt_password").val(),
+						role : $("#sel_role").val(),
+						phone : $("#txt_phone").val(),
+						email : $("#txt_email").val()		
+					},
+					success:function(data){
+						if(data.success){
+								$.Pop("修改成功",'alert',false)
+
+						}else{
+							 $.Pop(data.errMessage,'alert',false)
+						}			
+					},
+					error:function(){
+						 $.Pop("新增发生异常",'alert',false);
+					}		
+				});	
+			}
+			function txtClear(){
+				$("#txt_emp_id").val("");
+				$("#txt_emp_name").val("");
+				$("#txt_password").val("");
+				$("#sel_role").val("");
+				$("#txt_phone").val("");
+				$("#txt_email").val("");	
+			}
+			function getUrlParam(name) {//a标签跳转获取参数
+              var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+              var r = window.location.search.substr(1).match(reg);
+              if (r != null) return (r[2]); return null;
+            }
+			function searchEmpInfoById(empId){
+			$.ajax({
+				type:"post",
+				url:"http://127.0.0.1:8080/project/emp/searchById",
+				async:true,
+				dataType:"json",
+				xhrFields: { 
+                        withCredentials: true 
+                     }, 
+				data:{
+					empId : empId
+					
+				},
+				success:function(data){
+				     if(data.success){
+				     	var info = data.data;
+				     	$("#txt_emp_id").val(info.empId);
+						$("#txt_emp_name").val(info.empName);
+						$("#txt_password").val(info.password);
+						$("#sel_role").val(info.role);
+						$("#txt_phone").val(info.phone);
+						$("#txt_email").val(info.email);
+				      }
+				      
+				     },
+				error: function() {
+				            $.Pop("查询员工信息异常",'alert',false);
+				       }
+
+			});
+		}
+			function bindRole(){
+			$.ajax({
+				type:"post",
+				url:"http://127.0.0.1:8080/project/role/search",
+				async:false,
+				xhrFields: { 
+                        withCredentials: true 
+                     }, 
+				dataType:"json",
+				data:{
+					
+				},
+				success:function(data){
+				      if (data.success){
+				      	$.each(data.data, function(i,o) {
+				      		$("#sel_role").append("<option value='" + o.roleId + "'>" +o.roleName+"</option>");
+				      	});
+				      }
+				     },
+				error: function() {
+				             $.Pop("绑定角色发生异常",'alert',false);
+				       }
+
+			});
+		}
+			function isEmpty(obj){
+				if(obj==null || obj==""){
+					return true;
+				}else{
+					return false;
+				}
+			}
+			
+		</script>
+	</body>
+</html>

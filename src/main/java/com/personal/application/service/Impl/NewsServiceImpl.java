@@ -16,9 +16,8 @@ public class NewsServiceImpl implements NewsService {
 
 
     @Override
-    public List<News> findNewsList(Integer newsType,String title,Integer startRow,Integer pageSize) {
-        return newsMapper.findNewsList(newsType,title,startRow,pageSize);
-
+    public List<News> findNewsList(Integer newsType, Integer selConditions, String selContent, Integer startRow, Integer pageSize) {
+        return newsMapper.findNewsList(newsType,selConditions,selContent,startRow,pageSize);
     }
 
     @Override
@@ -29,6 +28,11 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public List<News> findAuditNewsList(Integer startRow, Integer pageSize) {
          return newsMapper.findAuditNewsList(startRow,pageSize);
+    }
+
+    @Override
+    public List<News> findAllNewsList(Integer newsType, String title, Integer startRow, Integer pageSize) {
+        return newsMapper.findAllNewsList(newsType,title,startRow,pageSize);
     }
 
 

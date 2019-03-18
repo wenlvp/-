@@ -57,7 +57,7 @@
     function findAuditInfo(pageIndex){
         $.ajax({
             type:"post",
-            url:"http://127.0.0.1:8080/project/news/findAudit",
+            url:"http://127.0.0.1:8080/project/news/find",
             async:false,
             xhrFields: {
                 withCredentials: true
@@ -86,7 +86,6 @@
                             tbody += '<td><nobr>' + o.userId+ '</nobr></td>';
                             tbody += '<td><nobr>' + o.newsTypeName + '</nobr></td>';
                             tbody += '<td><nobr>' + getDate(o.pubTime) + '</nobr></td>';
-
                             tbody += '</tr>';
                         }else{
                             dataCount = parseInt(o.newsId);

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
+		<script type="text/javascript" src="js/plug-in.js" ></script>
+		<title></title>
+		
+		<style>
+			
+			
+		</style>
+	</head>
+	<body>
+		<div>
+			<div>
+			<div style="margin-bottom: 20px;">
+				<label class="lab mar-l8">员工id:</label>
+				<input id="emp_id" class="txt mar-l1 mar-r8" type="text" placeholder="请输入员工id" >
+				<label class="lab mar-l8">员工姓名:</label>
+				<input id="emp_name" class="txt mar-l1 mar-r8" type="text" placeholder="请输入员工姓名">
+				<label class="lab mar-l8">员工角色:</label>
+				<select id="emp_role" class="txt mar-l1 mar-r8" data-toggle="select">
+		            <option value="">请选择员工角色</option>
+                </select>
+
+			</div>
+			<div style="height: 55px;" >
+				<input id="btn_clear" class="btn-con" type="button" value="清空" onclick="txtClear()">
+				<input id="btn_search" class="btn-con" type="button" value="检索" onclick="searchEmpInfo()">
+			</div>
+			<div class="the-box">
+				<div class="table-responsive">
+				<table id="table_example" class="table" border="1" style="text-align: center;border-color: #B0B9B8;">
+					<thead class="the-box">
+						<tr >
+							<td>序号</td>
+							<td>员工id</td>
+							<td>员工姓名</td>
+							<td>角色</td>
+							<td>手机号</td>
+							<td>邮箱</td>
+							<td>编辑</td>
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+		</div>
+		</div>
+		
+	</body>
+	
+	<script>
+		$(function(){
+			bindRole();
+			searchEmpInfo();
+		});
+		function searchEmpInfo(){
+			$.ajax({
+				type:"post",
+				url:"http://127.0.0.1:8080/project/emp/search",
+				async:true,
+				xhrFields: { 
+                        withCredentials: true 
+                     }, 
+				dataType:"json",
+				 xhrFields: { 
+                        withCredentials: true 
+                     }, 
+                      crossDomain: true, 
+				data:{
+					empId : $("#emp_id").val(),
+					empName : $("#emp_name").val(),
+					role : $("#emp_role").val()
+				},
+				success:function(data){
+				      $("#table_example tbody").empty();
+				      var tbody = "";
+				      var backColor = "";
+				      if (data.length>0){
+				      	$.each(data, function(i,o) {
+				      		var no =parseInt(i+1);
+				      		if(i%2==0){
+				      			backColor="#E0FFFF";
+				      		}else{
+				      			backColor = "white";
+				      		}
+				      		tbody += "<tr style='background-color:"+ backColor+"'>";
+				      		tbody += '<td><nobr>' + no + '</nobr></td>';
+				      		tbody += "<td><nobr><a style='cursor:pointer;color:blue' href='addEmp.html?action="+o.empId+"' >" + o.empId + "</a></nobr></td>";
+				      		tbody += '<td><nobr>' + o.empName + '</nobr></td>';
+				      		tbody += '<td><nobr>' + o.role + '</nobr></td>';
+				      		tbody += '<td><nobr>' + o.phone + '</nobr></td>';
+				      		tbody += '<td><nobr>' + o.email + '</nobr></td>';
+				      		tbody += "<td><nobr><a id='" +o.empId + "' onclick='delEmp(this)' style='cursor:pointer;color:blue'>删除</a></nobr></td>";
+				      		tbody += '</tr>';
+				      	});
+				      }
+				      $("#table_example tbody").append(tbody);
+				     },
+				error: function() {
+				            $.Pop("查询发生异常",'alert',false);
+				       }
+
+			});
+		}
+		function bindRole(){
+			$.ajax({
+				type:"post",
+				url:"http://127.0.0.1:8080/project/role/search",
+				async:false,
+				xhrFields: { 
+                        withCredentials: true 
+                     }, 
+				dataType:"json",
+				data:{
+					
+				},
+				success:function(data){
+				      if (data.success){
+				      	$.each(data.data, function(i,o) {
+				      		$("#emp_role").append("<option value='" + o.roleId + "'>" +o.roleName+"</option>");
+				      	});
+				      }
+				     },
+				error: function() {
+				            $.Pop("绑定角色发生异常",'alert',false);
+				       }
+
+			});
+		}
+		function delEmp(obj){
+    	$.Pop('确定删除吗','confirm',function(){ delEmpInfo(obj)})
+    }
+		function delEmpInfo(obj){
+			
+			$.ajax({
+				type:"post",
+				url:"http://127.0.0.1:8080/project/emp/delete",
+				async:true,
+				xhrFields: { 
+                        withCredentials: true 
+                     }, 
+				dataType:"json",
+				data:{
+					empId : obj.id
+				},
+				success:function(data){
+				      if (data.success){
+				      	$.Pop("删除成功",'alert',false);
+				      	searchEmpInfo()
+				      }else{
+				      	$.Pop("删除失败",'alert',false);
+				      }
+				     },
+				error: function() {
+					$.Pop("删除发生异常",'alert',false);
+				       }
+
+			});
+		}
+		  function txtClear(){
+				$("#emp_id").val("");
+				$("#emp_name").val("");
+				$("#emp_role").val("");	
+			}
+	</script>
+</html>

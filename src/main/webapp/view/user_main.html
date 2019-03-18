@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/accordion.css">
+    <script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+    <script type="text/javascript" src="js/plug-in.js" ></script>
+    <title>Title</title>
+</head>
+<style>
+    .menu{
+        float: left;
+        height: 688px;
+        background-color: #4E4E4E;
+    }
+    .p_title{
+        font-size: 35px;
+        align-content: center;
+        position: absolute;
+        left:40%;
+        top: 10px;
+        color: darkorchid;
+    }
+
+    #title_info{
+        margin-left: 480px;
+        margin-top: 30px;
+        color: white;
+        font-size: 30px;
+        font-family: "bookman old style";
+    }
+    /*.dd{*/
+    /*display: none;*/
+    /*}*/
+</style>
+<body>
+<div>
+    <div style="height: 65px;width: 100%;background-color: aliceblue;">
+        <p class="p_title">管理员界面</p>
+        <div style="position: absolute;height: 60px;right: 50px;width: 100px;"  >
+
+        </div>
+    </div>
+    <div>
+        <div class="menu">
+
+            <dl class="list_dl">
+                <dt class="list_dt1">
+                    <p style=""><a  style="text-decoration: none;font-size: 25px;align-content: center;color: white;" target="frm" href="publicNews.html" >发表新闻</a></p>
+                </dt>
+                <dt class="list_dt1">
+                    <p style=""><a  style="text-decoration: none;font-size: 25px;align-content: center;color: white;" target="frm" href="homePage.html" onclick="jumpInfo('首页')">首页</a></p>
+                </dt>
+            </dl>
+
+        </div >
+        <div id="divpage" style="float: left;width: 1363px; ">
+            <div style="height: 50px;background-color: #2C81BA;">
+                <font id="title_info"></font>
+            </div>
+            <div>
+                <iframe id="childFrame" name="frm" width="100%" height="625px" frameborder="0" style="">
+
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(".list_dt").on("click",function () {
+        $('.list_dd').stop();
+        $(this).siblings("dt").removeAttr("id");
+        if($(this).attr("id")=="open"){
+            $(this).removeAttr("id").siblings("dd").slideUp();
+        }else{
+            $(this).attr("id","open").next().slideDown().siblings("dd").slideUp();
+        }
+    });
+</script>
+</body>
+</html>

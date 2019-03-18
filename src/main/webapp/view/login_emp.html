@@ -66,7 +66,6 @@
             </div>
             <div style="margin: 45px;margin-left: 40%;">
                 <input class="btn" id="btnLogin" type="button" onclick="login()" value="登录" />
-                <input class="btn" id="btnRegister" type="button" onclick="register()" value="注册" />
             </div>
 
         </div>
@@ -79,7 +78,7 @@
     function login(){
         $.ajax({
 
-            url:"http://127.0.0.1:8080/project/user/login",
+            url:"http://127.0.0.1:8080/project/emp/login",
             data:{
                 userId : $("#empId").val(),
                 pwd : $("#pwd").val()
@@ -92,8 +91,7 @@
             dataType:"json",
             success:function(data){
                 if(data.success){
-                    //window.location.href="menu.html?action=" + info;
-                    window.location.href = "homepage.html";
+                    window.location.href = "emp_main.html";
                 }else{
 
                 }

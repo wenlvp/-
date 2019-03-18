@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/bootstrap.min.css" />
+		<script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
+		<script type="text/javascript" src="js/plug-in.js" ></script>
+		<title></title>
+	</head>
+	<body>
+		<div>
+			<div>
+			<div style="margin-bottom: 20px;">
+				
+
+			</div>
+			<div  style="height: 55px;">
+				<input id="btn_search" class="btn-con" type="button" value="检索" onclick="searchRole()">
+			</div>
+			<div class="the-box">
+				<div class="table-responsive">
+				<table id="table_example" class="table" border="1" style="text-align: center;border-color: #B0B9B8;">
+					<thead class="the-box">
+						<tr >
+							<td>序号</td>
+							<td>权限编号</td>
+							<td>权限名称</td>
+							<td>备注</td>
+							<td>删除</td>
+							
+						</tr>
+					</thead>
+					<tbody>
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+		</div>
+		</div>
+		<script>
+			$(function(){
+			searchRole();
+		});
+		function searchRole(){
+			$.ajax({
+				type:"post",
+				url:"http://127.0.0.1:8080/project/role/search",
+				async:true,
+				xhrFields: { 
+                        withCredentials: true 
+                     }, 
+				dataType:"json",
+				data : {
+				},
+				success:function(data){
+				      $("#table_example tbody").empty();
+				      var tbody = "";
+				      var backColor = "";
+				      if (data.success){
+				      	var info =data.data;
+				      	$.each(info, function(i,o) {
+				      		var no =parseInt(i+1);
+				      		if(i%2==0){
+				      			backColor="#E0FFFF";
+				      		}else{
+				      			backColor = "white";
+				      		}
+				      		tbody += "<tr style='background-color:"+ backColor+"'>";
+				      		tbody += '<td><nobr>' +no + '</nobr></td>';
+				      		tbody += "<td><nobr><a style='cursor:pointer;color:blue；text-decoration:none;' href='privilege.html?action="+o.roleId+"'>" + o.roleId + "</a></nobr></td>";
+				      		tbody += '<td><nobr>' + o.roleName + '</nobr></td>';
+				      		tbody += '<td><nobr>' + o.description+ '</nobr></td>';
+				      		tbody += "<td><nobr><a style='cursor:pointer;color:blue；text-decoration:none;' id='"+ o.roleId+"' onclick='delRole(this)'>删除</a></nobr></td>";
+				      		tbody += '</tr>';
+				      	});
+				      }
+				      $("#table_example tbody").append(tbody);
+				     },
+				error: function() {
+				            $.Pop("检索发生异常",'alert',false);
+				       }
+
+			});
+		}
+		function delRole(obj){
+			$.ajax({
+				type:"post",
+				url:"http://127.0.0.1:8080/project/role/del",
+				async:true,
+				xhrFields: { 
+                        withCredentials: true 
+                     }, 
+				dataType:"json",
+				data : {
+					roleId : obj.id
+				},
+				success:function(data){
+					 $.Pop("删除成功",'alert',false);
+				      searchRole();
+				     },
+				error: function() {
+				          $.Pop("删除发生异常",'alert',false);
+				       }
+
+			});
+		}
+		</script>
+	</body>
+</html>
