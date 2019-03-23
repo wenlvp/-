@@ -12,29 +12,122 @@
 </head>
 <body>
 <div>
-    <div>
-        <label>标题</label>
+    <div class="div-article">
+        <div>
+            <label id="lab_title"></label>
+        </div>
+        <div>
+            <label id="lab_pub_time"></label>
+            <label id="lab_news_type"></label>
+        </div>
+        <div>
+            <label id="lab_author"></label>
+        </div>
+        <div>
+            <p id="p_content"></p>
+        </div>
+        <div>
+            <button onclick="changeAgreeNum(newsId)">赞同</button>
+            <a >评论</a>
+            <a>收藏</a>
+            <label >阅读量</label>
+            <label id="read_num"></label>
+        </div>
     </div>
-    <div>
-        <label>时间</label>
-        <label>类型</label>
-    </div>
-    <div>
-        <label>发布者</label>
-    </div>
-    <div>
-        <p></p>
+    <div class="div-comment">
+        <table id="tab_comment">
+
+        </table>
     </div>
 </div>
 <script>
+    const newsId= getUrlParam("action");
     $(function(){
+
+        getNewsInfo(newsId);
+        addReadNum(newsId);
     });
+    function getNewsInfo(newsId){
+        $.ajax({
+            type:"post",
+            url: "http://127.0.0.1:8080/project/news/findBy",
+            async:false,
+            xhrFields: {
+                withCredentials: true
+            },
+            data:{
+                newsId : newsId,
+            },
+            success:function(data){
+                if (data.success){
+                    var info = data.data[0];
+                    $("#lab_title").text(info.title);
+                    $("#lab_pub_time").text(getDate(info.pubTime));
+                    $("#lab_news_type").text(info.newsTypeName);
+                    $("#lab_author").text(info.userId);
+                    $("#p_content").text(info.content);
+                    $("#read_num").text(info.readNum);
+                }else{
+                    $.Pop("错误",'alert',false);
+                }
+
+            },
+            error: function() {
+                $.Pop("发生异常",'alert',false);
+            }
+        });
+    }
+    function addReadNum(newsId){
+        $.ajax({
+            type:"post",
+            url: "http://127.0.0.1:8080/project/news/addReadNum",
+            async:false,
+            xhrFields: {
+                withCredentials: true
+            },
+            data:{
+                newsId : newsId,
+            },
+            success:function(data){
+
+            },
+            error: function() {
+                $.Pop("发生异常",'alert',false);
+            }
+        });
+    }
 function getUrlParam(name) {//a标签跳转获取参数
     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
     if(r!=null) return  unescape(r[2]); return null;
 }
+    function getDate(time){
+        var date = new Date(time);
+        var year = date.getFullYear();
+        var month = date.getMonth()+1;
+        var day = date.getDate();
+        var returnTime = year + "-" + month+"-" + day;
+        return returnTime;
+    }
+    function changeAgreeNum(newsId){
+        $.ajax({
+            type:"post",
+            url: "http://127.0.0.1:8080/project/news/changeAgreeNum",
+            async:false,
+            xhrFields: {
+                withCredentials: true
+            },
+            data:{
+                newsId : newsId,
+            },
+            success:function(data){
 
+            },
+            error: function() {
+                $.Pop("发生异常",'alert',false);
+            }
+        });
+    }
 </script>
 </body>
 </html>

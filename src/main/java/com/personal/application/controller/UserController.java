@@ -40,8 +40,8 @@ public class UserController {
         Optional<UserInfo> userInfo = userService.findUserById(userId);
         if(userInfo.isPresent()){
             String password = userInfo.get().getPassword();
-            session.setAttribute("userId",userId);
             if(password.equals(pwd)){
+                session.setAttribute("userId",userId);
                 resultVO.setSuccess(true);
             }
         }

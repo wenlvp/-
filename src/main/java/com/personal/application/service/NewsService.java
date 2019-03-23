@@ -13,4 +13,8 @@ public interface NewsService {
      List<News> findAuditNewsList(Integer startRow,Integer pageSize );
 
      List<News> findAllNewsList(Integer newsType,String title,Integer startRow,Integer pageSize);
+
+     Integer addReadNum(Integer newsId);
+
+     Integer changeAgree(Integer newsId,String userId);
 }

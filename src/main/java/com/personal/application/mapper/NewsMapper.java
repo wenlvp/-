@@ -1,8 +1,10 @@
 package com.personal.application.mapper;
 
 import com.personal.application.pojo.News;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -24,17 +26,18 @@ public interface NewsMapper {
             "\tLEFT JOIN user_info u ON n.user_id = u.user_id\n" +
             "\tLEFT JOIN dict d ON d.dict_value = n.news_type \n" +
             "\tAND d.dict_type = 'news'" +
-            " where n.is_audit = 0" +
+            " where n.is_del = 0" +
+            " and n.is_audit = 0" +
             "<if test ='newsType !=null '>" +
             " and n.news_type = #{newsType}" +
             "</if>" +
-            "<if test ='selContent !=null and selConditions = 1'  >" +
+            "<if test ='selConditions == 1'  >" +
             " \tand instr(n.title,#{selContent})" +
             "</if>" +
-            "<if test ='selContent !=null and selConditions = 2' >" +
+            "<if test ='selConditions == 2' >" +
             " \tand instr(u.user_name,#{selContent})" +
             "</if>" +
-            "<if test ='selContent !=null and selConditions = 3 '>" +
+            "<if test ='selConditions == 3 '>" +
             " \tand instr(n.content,#{selContent})" +
             "</if>" +
             " order by n.pub_time" +
@@ -59,13 +62,13 @@ public interface NewsMapper {
             "<if test ='newsType !=null '>" +
             " and n.news_type = #{newsType}" +
             "</if>" +
-            "<if test ='selContent !=null and selConditions = 1'  >" +
+            "<if test ='selConditions == 1'  >" +
             " \tand instr(n.title,#{selContent})" +
             "</if>" +
-            "<if test ='selContent !=null and selConditions = 2' >" +
+            "<if test ='selConditions == 2' >" +
             " \tand instr(u.user_name,#{selContent})" +
             "</if>" +
-            "<if test ='selContent !=null and selConditions = 3 '>" +
+            "<if test =' selConditions == 3 '>" +
             " \tand instr(n.content,#{selContent})" +
             "</if>" +
             "</script>")
@@ -188,4 +191,48 @@ public interface NewsMapper {
                                @Param("title") String title,
                                @Param("startRow") Integer startRow,
                                @Param("pageSize") Integer pageSize);
+
+    @Update("<script>" +
+            "UPDATE news \n" +
+            "SET read_num = read_num + 1 \n" +
+            "WHERE\n" +
+            "\tnews_id = #{newsId}" +
+            "</script>")
+   Integer addReadNum(@Param("newsId") Integer newsId);
+
+    @Update("<script>" +
+            "UPDATE news \n" +
+            "SET agree_num = agree_num + 1 \n" +
+            "WHERE\n" +
+            "\tnews_id = #{newsId}" +
+            "</script>")
+    Integer changeAgreeNum(@Param("newsId") Integer newsId);
+
+    @Insert("<script>" +
+            "INSERT INTO agree ( user_id, news_id, is_agree )\n" +
+            "VALUES\n" +
+            "\t( #{userId}, #{newsId}, 0 )" +
+            "</script>")
+    Integer addAgree(@Param("newsId") Integer newsId,
+                     @Param("userId") String userId);
+
+    @Select("<script>" +
+            "select is_agree \n" +
+            "from agree \n" +
+            "where user_id =  #{userId}\n" +
+            "and news_id =#{newsId}\n" +
+            "</script>")
+    Integer getAgreeById(@Param("newsId") Integer newsId,
+                         @Param("userId") String userId);
+
+    @Insert("<script>" +
+            "UPDATE agree \n" +
+            "SET is_agree = #{agreeFlg} \n" +
+            "WHERE\n" +
+            "\tnews_id = #{newsId}" +
+            "\tuser_id = #{userId}" +
+            "</script>")
+    Integer updateAgreeFlg(@Param("newsId") Integer newsId,
+                           @Param("userId") String userId,
+                           @Param("agreeFlg") String agreeFlg);
 }

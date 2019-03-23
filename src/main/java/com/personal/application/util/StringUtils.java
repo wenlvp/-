@@ -224,4 +224,8 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         String regex = "^[\u4e00-\u9fa5],{0,}$";
         return !match(regex, str);
     }
+
+    public static String toNull(String str){
+        return (str == "")?null:str;
+    }
 }

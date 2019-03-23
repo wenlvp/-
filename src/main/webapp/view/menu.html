@@ -44,9 +44,6 @@
 				font-size: 30px;
 				font-family: "bookman old style";
 			}
-			.dd{
-				display: none;
-			}
 		</style>
 	</head>
 	<body>
@@ -102,7 +99,7 @@
                             var tbody ="";
                             tbody +="<tr>";
                             tbody += "<td style='width: 45px'><a onclick='openLogin()'>登录</a></td>";
-                            tbody += "<td style='width: 45px'><a onclick='register()'>注册</a></td>";
+                            tbody += "<td style='width: 45px'><a onclick='openRegister()'>注册</a></td>";
                             $("#user").append(tbody);
                         }
 
@@ -113,7 +110,12 @@
                 });
 			}
 
-
+         function openRegister(){
+             window.location.href = "register.html";
+		 }
+		 function  openLogin(){
+             window.location.href = "login.html";
+		 }
 		function getUrlParam(name) {//a标签跳转获取参数
 		  var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
 		  var r = window.location.search.substr(1).match(reg);

@@ -35,5 +35,18 @@ public class NewsServiceImpl implements NewsService {
         return newsMapper.findAllNewsList(newsType,title,startRow,pageSize);
     }
 
+    @Override
+    public Integer addReadNum(Integer newsId) {
+        return newsMapper.addReadNum(newsId);
+    }
+
+    @Override
+    public Integer changeAgree(Integer newsId, String userId) {
+        Integer successFlg = 0;
+
+        return null;
+    }
+
+
 
 }

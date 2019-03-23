@@ -3,8 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/page_register.css" />
+    <script type="text/javascript" src="js/pagination.js" ></script>
+    <script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
+    <script type="text/javascript" src="js/plug-in.js" ></script>
 </head>
 <body>
+<div>
+    <div class="div-article">
+        <div>
+            <input id="lab_title" type="text"/>
+        </div>
+        <div>
+            <select id="news_type">
+
+            </select>
+            <input id="lab_news_type" type="text"/>
+        </div>
+        <div>
+            <input id="p_content" type="text"/>
+        </div>
+    </div>
+    <div class="div-comment">
+<button onclick="publicNews()">发表</button>
+    </div>
+</div>
+<script>
+    const newsType = "news";
+    $(function(){
+        getNewsType();
+    });
+    function getNewsType(){
+        $.ajax({
+            type:"post",
+            url: "http://127.0.0.1:8080/project/dict/bind",
+            xhrFields: {
+                withCredentials: true
+            },
+            data:{
+                type : newsType,
+            },
+            success:function(data){
+                if (data.success){
+                    $("#news_type ").empty();
+                    var tbody="";
+                    var info = data.data;
+                    $.each(info, function(i,o) {
+                        tbody += "<option value='"+ o.dictValue+"'>"+ o.dictName+"</option>";
+
+                    });
+                    $("#news_type").append(tbody);
+                }else{
+                    $.Pop("错误",'alert',false);
+                }
+
+            },
+            error: function() {
+                $.Pop("发生异常",'alert',false);
+            }
+        });
+    }
+    function publicNews(){
+        $.ajax({
+            type:"post",
+            url: "http://127.0.0.1:8080/project/news/addNews",
+            async:false,
+            xhrFields: {
+                withCredentials: true
+            },
+            data:{
+               title: $("#lab_title").val(),
+                newsType :$("#news_type").val(),
+                content:$("#p_content").val()
+            },
+            success:function(data){
+                if (data.success){
+
+                }else{
+                    $.Pop("错误",'alert',false);
+                }
+
+            },
+            error: function() {
+                $.Pop("发生异常",'alert',false);
+            }
+        });
+    }
+</script>
 
 </body>
 </html>
