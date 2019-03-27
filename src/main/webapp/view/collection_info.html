@@ -25,9 +25,9 @@
                 <tr >
                     <td>序号</td>
                     <td>标题</td>
-                    <td>发布人</td>
+                    <td>作者</td>
                     <td>类型</td>
-                    <td>时间</td>
+                    <td>收藏时间</td>
                 </tr>
                 </thead>
                 <tbody>
@@ -47,17 +47,17 @@
     var pageSize = 10;
     var dataCount = 0;
     $(function(){
-        findAuditInfo(1);
+        findCollectNews(1);
         paging();
     });
     function search(){
-        findAuditInfo(1);
+        findCollectNews(1);
         paging();
     }
-    function findAuditInfo(pageIndex){
+    function findCollectNews(pageIndex){
         $.ajax({
             type:"post",
-            url:"http://127.0.0.1:8080/project/news/find",
+            url:"http://127.0.0.1:8080/project/user/findCollectionBy",
             async:false,
             xhrFields: {
                 withCredentials: true
@@ -83,9 +83,9 @@
                             tbody += "<tr style='background-color:"+ backColor+"'>";
                             tbody += "<td><nobr><a href=''>"+ (no+i)+"</a></nobr></td>";
                             tbody += '<td><nobr>' + o.title + '</nobr></td>';
-                            tbody += '<td><nobr>' + o.userId+ '</nobr></td>';
+                            tbody += '<td><nobr>' + o.userName+ '</nobr></td>';
                             tbody += '<td><nobr>' + o.newsTypeName + '</nobr></td>';
-                            tbody += '<td><nobr>' + getDate(o.pubTime) + '</nobr></td>';
+                            tbody += '<td><nobr>' + getDate(o.createTime) + '</nobr></td>';
                             tbody += '</tr>';
                         }else{
                             dataCount = parseInt(o.newsId);
@@ -113,12 +113,17 @@
                 if(_pageSize !=null){
                     pageSize = parseInt(_pageSize);
                 }
-                findAuditInfo(index+1);
+                findCollectNews(index+1);
             }
         })
 
     }
-
+    function txtClear(){
+        $("#txt_lease_id").val("");
+        $("#txt_lease_type").val("");
+        $("#before_time").val("");
+        $("#late_time").val("");
+    }
     function getDate(time){
         var date = new Date(time);
         var year = date.getFullYear();

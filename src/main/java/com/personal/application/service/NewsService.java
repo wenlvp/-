@@ -17,4 +17,6 @@ public interface NewsService {
      Integer addReadNum(Integer newsId);
 
      Integer changeAgree(Integer newsId,String userId);
+
+     Integer getIsAgree(Integer newsId, String userId);
 }

@@ -2,7 +2,9 @@ package com.personal.application.controller;
 
 import com.personal.application.VO.ResultVO;
 import com.personal.application.common.Constant;
+import com.personal.application.dto.CollectionDto;
 import com.personal.application.pojo.UserInfo;
+import com.personal.application.service.CollectionService;
 import com.personal.application.service.UserService;
 import com.personal.application.util.CheckUtils;
 import com.personal.application.util.StringUtils;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -19,9 +22,12 @@ import java.util.Optional;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private CollectionService collectionService;
+
+    ResultVO resultVO = new ResultVO();
     @PostMapping("judgeLogin")
     public ResultVO judgeLogin( HttpServletRequest request){
-        ResultVO resultVO = new ResultVO();
         HttpSession session = request.getSession();
         if (CheckUtils.isEmpty(session.getAttribute(Constant.LOGIN_ID))){
             resultVO.setSuccess(false);
@@ -35,7 +41,6 @@ public class UserController {
     public ResultVO login(@RequestParam(value = "userId") String userId,
                           @RequestParam(value = "pwd") String pwd,
                           HttpServletRequest request){
-        ResultVO resultVO = new ResultVO();
         HttpSession session = request.getSession();
         Optional<UserInfo> userInfo = userService.findUserById(userId);
         if(userInfo.isPresent()){
@@ -55,7 +60,7 @@ public class UserController {
                         @RequestParam(value = "sex" ,required = false) String sex,
                         @RequestParam(value = "identity",required = false) String identity,
                         @RequestParam(value = "userName",required = false) String userName){
-        ResultVO resultVO = new ResultVO();
+
         Optional<UserInfo> userInfoOp = userService.findUserById(userId);
         if(userInfoOp.isPresent()){
            resultVO.setMessage("该账号已存在");
@@ -65,5 +70,19 @@ public class UserController {
             resultVO.setSuccess(true);
         }
         return resultVO;
+    }
+
+    @PostMapping("findCollectionBy")
+    public ResultVO changeAgreeNum(HttpServletRequest request,
+                                   @RequestParam(value = "newsType",required = false) Integer newsType,
+                                   @RequestParam(value = "pageSize",required = false) Integer pageSize,
+                                   @RequestParam(value = "pageIndex",required = false) Integer pageIndex){
+        String userId = request.getSession().getAttribute("userId").toString();
+        int startRow = (pageIndex-1) * pageSize ;
+        CollectionDto dto = new CollectionDto(userId,newsType,startRow,pageSize);
+
+        List<CollectionDto> list =collectionService.findCollectionByUserId( dto);
+        resultVO.beSuccess(list);
+        return  resultVO;
     }
 }

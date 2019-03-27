@@ -186,7 +186,7 @@
                         if(i < info.length -1){
                             tbody += "<tr>";
                             tbody += "<td rowspan=\"4\">"+o.newsPicture+"</td>"
-                            tbody += "<td><a style='cursor:pointer;text-decoration:none;' href='news_detail.html?action="+o.newsId+"'>" + o.title + "</a></td>";
+                            tbody += "<td><a style='cursor:pointer;text-decoration:none;' target='_blank' href='news_detail.html?action="+o.newsId+"'>" + o.title + "</a></td>";
                             tbody += "</tr>" ;
                             tbody += "<tr><td><p>"+getDate(o.pubTime)+"-"+o.newsTypeName +"-"+o.userId+"- 阅"+o.readNum+"</p></td></tr>" ;
                             tbody += "<tr><td rowspan=\"2\"><p>"+o.content+"</p></td></tr>" ;

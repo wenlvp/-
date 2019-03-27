@@ -14,11 +14,20 @@ public class ResultVO<T> {
     //拦截器验证值
     private boolean login = true;
 
-    public boolean isSuccess(T data){
+    public String getMessage() {
+        return message;
+    }
+
+
+
+    public void beSuccess(T data){
         this.data = data;
         this.success = true;
-        this.message = "操作成功";
-        return true;
+        this.message = SUCCESS_MSG;
+    }
+    public void beSuccess(){
+        this.success = true;
+        this.message = SUCCESS_MSG;
     }
 
 }

@@ -19,6 +19,7 @@ public interface NewsMapper {
             "\tn.content,\n" +
             "\tn.read_num,\n" +
             "\tn.comment_num,\n" +
+            "\tn.agree_num,\n" +
             "\tn.news_picture,\n" +
             "\td.dict_name AS 'newsTypeName' \n" +
             "FROM\n" +
@@ -51,6 +52,7 @@ public interface NewsMapper {
             "\tn.content,\n" +
             "\tn.read_num,\n" +
             "\tn.comment_num,\n" +
+            "\tn.agree_num,\n" +
             "\tn.news_picture,\n" +
             "\td.dict_name AS 'newsTypeName' \n" +
             "FROM\n" +
@@ -87,6 +89,7 @@ public interface NewsMapper {
             "\tn.content,\n" +
             "\tn.read_num,\n" +
             "\tn.comment_num,\n" +
+            "\tn.agree_num,\n" +
             "\tn.news_picture,\n" +
             "\td.dict_name AS 'newsTypeName' \n" +
             "FROM\n" +
@@ -109,6 +112,7 @@ public interface NewsMapper {
             "\tn.content,\n" +
             "\tn.read_num,\n" +
             "\tn.comment_num,\n" +
+            "\tn.agree_num,\n" +
             "\tn.news_picture,\n" +
             "\td.dict_name AS 'newsTypeName' \n" +
             "FROM\n" +
@@ -129,6 +133,7 @@ public interface NewsMapper {
             "     content,\n" +
             "     read_num,\n" +
             "     comment_num,\n" +
+            "\tagree_num,\n" +
             "     news_picture,\n" +
             "\t\t user_id\n" +
             "            FROM\n" +
@@ -148,6 +153,7 @@ public interface NewsMapper {
             "\tn.content,\n" +
             "\tn.read_num,\n" +
             "\tn.comment_num,\n" +
+            "\tn.agree_num,\n" +
             "\tn.news_picture,\n" +
             "\td.dict_name AS 'newsTypeName' \n" +
             "FROM\n" +
@@ -173,6 +179,7 @@ public interface NewsMapper {
             "\tn.content,\n" +
             "\tn.read_num,\n" +
             "\tn.comment_num,\n" +
+            "\tn.agree_num,\n" +
             "\tn.news_picture,\n" +
             "\td.dict_name AS 'newsTypeName' \n" +
             "FROM\n" +
@@ -202,11 +209,18 @@ public interface NewsMapper {
 
     @Update("<script>" +
             "UPDATE news \n" +
-            "SET agree_num = agree_num + 1 \n" +
+            "SET " +
+            "<if test ='flag == 0 '>" +
+            " agree_num = agree_num + 1" +
+            "</if>" +
+            "<if test ='flag == 1 '>" +
+            " agree_num = agree_num - 1" +
+            "</if>" +
             "WHERE\n" +
             "\tnews_id = #{newsId}" +
             "</script>")
-    Integer changeAgreeNum(@Param("newsId") Integer newsId);
+    Integer changeAgreeNum(@Param("newsId") Integer newsId,
+                           @Param("flag") Integer flag);
 
     @Insert("<script>" +
             "INSERT INTO agree ( user_id, news_id, is_agree )\n" +
@@ -216,11 +230,17 @@ public interface NewsMapper {
     Integer addAgree(@Param("newsId") Integer newsId,
                      @Param("userId") String userId);
 
+
     @Select("<script>" +
-            "select is_agree \n" +
-            "from agree \n" +
-            "where user_id =  #{userId}\n" +
-            "and news_id =#{newsId}\n" +
+            "select \n" +
+            "case count(is_agree) \n" +
+            "when is_agree=0 then 0\n" +
+            "when is_agree=1 then 1\n" +
+            "else  2\n" +
+            "end as agree\n" +
+            "        from agree \n" +
+            "        where user_id = #{userId}\n" +
+            "        and news_id =#{newsId}" +
             "</script>")
     Integer getAgreeById(@Param("newsId") Integer newsId,
                          @Param("userId") String userId);
@@ -229,10 +249,10 @@ public interface NewsMapper {
             "UPDATE agree \n" +
             "SET is_agree = #{agreeFlg} \n" +
             "WHERE\n" +
-            "\tnews_id = #{newsId}" +
+            "\tnews_id = #{newsId} and" +
             "\tuser_id = #{userId}" +
             "</script>")
     Integer updateAgreeFlg(@Param("newsId") Integer newsId,
                            @Param("userId") String userId,
-                           @Param("agreeFlg") String agreeFlg);
+                           @Param("agreeFlg") Integer agreeFlg);
 }

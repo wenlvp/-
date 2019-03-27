@@ -18,6 +18,7 @@ public class News {
     private String content;
     private Integer readNum;
     private Integer commentNum;
+    private Integer agreeNum;
     private String newsPicture;
     private Integer auditFlg;
     private String newsTypeName;

@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/accordion.css">
-    <script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/page_register.css" />
+    <script type="text/javascript" src="js/pagination.js" ></script>
+    <script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
     <script type="text/javascript" src="js/plug-in.js" ></script>
     <title>Title</title>
 </head>
@@ -29,14 +32,14 @@
         font-size: 30px;
         font-family: "bookman old style";
     }
-    /*.dd{*/
-    /*display: none;*/
-    /*}*/
+
 </style>
 <body>
 <div>
     <div style="height: 65px;width: 100%;background-color: aliceblue;">
-        <p class="p_title">管理员界面</p>
+        <p class="p_title">
+            <a href="menu.html">首页</a>
+        </p>
         <div style="position: absolute;height: 60px;right: 50px;width: 100px;"  >
 
         </div>
@@ -46,10 +49,13 @@
 
             <dl class="list_dl">
                 <dt class="list_dt1">
+                    <p style=""><a id="myNotice" style="text-decoration: none;font-size: 25px;align-content: center;color: white;" target="frm" href="my_notice.html" >我的通知</a></p>
+                </dt>
+                <dt class="list_dt1">
                     <p style=""><a  style="text-decoration: none;font-size: 25px;align-content: center;color: white;" target="frm" href="publicNews.html" >发表新闻</a></p>
                 </dt>
                 <dt class="list_dt1">
-                    <p style=""><a  style="text-decoration: none;font-size: 25px;align-content: center;color: white;" target="frm" href="homePage.html" onclick="jumpInfo('首页')">首页</a></p>
+                    <p style=""><a  style="text-decoration: none;font-size: 25px;align-content: center;color: white;" target="frm" href="collection_info.html" onclick="jumpInfo('首页')">我的收藏</a></p>
                 </dt>
             </dl>
 
@@ -68,6 +74,9 @@
 
 </div>
 <script>
+    $(function(){
+        $("#homepage")[0].click();
+    });
     $(".list_dt").on("click",function () {
         $('.list_dd').stop();
         $(this).siblings("dt").removeAttr("id");

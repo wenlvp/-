@@ -23,26 +23,12 @@ public class DateTimeUtils extends DateUtils {
      * 获取当前日期
      * @param format 要获取当前日期的格式*
      * @return 指定格式的当前日期*/
-    public static String getLocalDate(String format){
-        String strDate ="";
-        if (format.equals(YYYY_MM_DD)){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            strDate = sdf.format(date);
-        }
-        if (format.equals(YYYY_MM_DD2)){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-            strDate = sdf.format(date);
-        }
-        if (format.equals(YYYY_MM_DD3)){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            strDate = sdf.format(date);
-        }
-
-        if (format.equals(YYYY_MM_DD_HH_MM_SS)){
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            strDate = sdf.format(date);
-        }
-        return strDate;
+    public static String getLocalStrDate(String format){
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
+    }
+    public static Date getLocalDate(){
+        return new Date();
     }
 
     public static int getYear(){
