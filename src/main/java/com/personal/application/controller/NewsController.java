@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -61,8 +62,12 @@ public class NewsController {
     }
 
     @PostMapping("addNews")
-    public ResultVO addNews(@RequestBody News news){
+    public ResultVO addNews(@RequestParam(value = "title") String title,
+                            @RequestParam(value = "newsType") Integer newsType,
+                            @RequestParam(value = "content") String content,
+                            HttpSession session){
         ResultVO resultVO = new ResultVO();
+        newsService.addNews(new News(title,newsType,session.getAttribute(Constant.LOGIN_ID).toString() ,content));
         resultVO.setSuccess(true);
         return  resultVO;
     }

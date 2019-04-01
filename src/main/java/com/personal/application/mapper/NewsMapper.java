@@ -5,9 +5,11 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface NewsMapper {
     @Select("<script>" +
             " select t.* from " +
@@ -245,7 +247,7 @@ public interface NewsMapper {
     Integer getAgreeById(@Param("newsId") Integer newsId,
                          @Param("userId") String userId);
 
-    @Insert("<script>" +
+    @Update("<script>" +
             "UPDATE agree \n" +
             "SET is_agree = #{agreeFlg} \n" +
             "WHERE\n" +
@@ -255,4 +257,10 @@ public interface NewsMapper {
     Integer updateAgreeFlg(@Param("newsId") Integer newsId,
                            @Param("userId") String userId,
                            @Param("agreeFlg") Integer agreeFlg);
+    @Insert("<script>" +
+            "INSERT INTO news ( title, news_type, user_id, content, read_num, agree_num, comment_num, is_audit, is_del, pub_time )\n" +
+            "VALUES\n" +
+            "\t( #{title}, #{newsType},#{userId}, #{content}, 0, 0, 0, 1, 0, NOW( ) )" +
+            "</script>")
+    Integer addNews(News news);
 }

@@ -3,9 +3,11 @@ package com.personal.application.mapper;
 import com.personal.application.pojo.EmpMst;
 import com.personal.application.pojo.Privilege;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface RoleMapper {
     @Select("<script>" +
             "select a.module_code,b.module_name,a.menu_code,a.menu_name,a.menu_group\n" +

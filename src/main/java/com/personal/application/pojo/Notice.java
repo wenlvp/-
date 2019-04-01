@@ -18,6 +18,8 @@ public class Notice {
     private Integer readFlg;
     private Date createTime;
 
+    private String title;
+    private String userName;
     public Notice(String message, Integer newsId, String createUserId) {
         this.message = message;
         this.newsId = newsId;

@@ -22,4 +22,14 @@ public class News {
     private String newsPicture;
     private Integer auditFlg;
     private String newsTypeName;
+
+    public News(String title, Integer newsType, String userId,  String content) {
+        this.title = title;
+        this.newsType = newsType;
+        this.userId = userId;
+        this.content = content;
+    }
+
+    public News() {
+    }
 }

@@ -63,7 +63,7 @@
 			</div>
 		</div>
 		<a id="homepage" target="frm" href="homepage.html" style="display: none" ></a>
-		<div id="divpage" style="float: left;width: 1363px;margin-left: 158px ">
+		<div id="divpage" style="float: left;width: 1100px;margin-left: 220px ">
 			<div>
 				<iframe id="childFrame" name="frm" width="100%" height="650px" frameborder="0" style="">
 
@@ -92,7 +92,7 @@
                             var tbody ="";
                             tbody +="<tr>";
                             tbody += "<td style='width: 45px'><a id='"+ data.data+"' onclick='jumpUser(this)'>"+ data.data+"</a></td>";
-                            tbody += "<td style='width: 45px'><a>退出</a></td>";
+                            tbody += "<td style='width: 45px'  onclick='exitUser(this)'><a>退出</a></td>";
                             $("#user").append(tbody);
                         }else{
                             $("#user").empty();
@@ -133,6 +133,24 @@
 	function jumpUser(value){
 	    var userId = value.id;
         window.location.href = "user_main.html?userId="+userId;
+	}
+	function exitUser(){
+        $.ajax({
+            type:"post",
+            url: "http://127.0.0.1:8080/project/user/exitUser",
+            async:true,
+            xhrFields: {
+                withCredentials: true
+            },
+            data:{
+            },
+            success:function(data){
+                judgeLogin();
+            },
+            error: function() {
+                $.Pop("发生异常",'alert',false);
+            }
+        });
 	}
 		</script>
 	</body>

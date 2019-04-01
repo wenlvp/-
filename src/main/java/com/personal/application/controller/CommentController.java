@@ -24,7 +24,7 @@ public class CommentController {
     public ResultVO addComments(@RequestParam(value = "newsId") Integer newsId,
                                 @RequestParam(value = "comments") String comments,
                                 HttpSession session){
-        commentService.addComment(new Comment(newsId,session.getAttribute(Constant.LOGIN_ID).toString(),comments, new Date()));
+        commentService.addComment(new Comment(newsId,session.getAttribute(Constant.LOGIN_ID).toString(),comments));
         resultVo.beSuccess();
         return resultVo;
     }

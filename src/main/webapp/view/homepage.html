@@ -22,23 +22,10 @@
             vertical-align: middle;
             border-top: 1px solid #ddd;
         }
-        .title{
-            font-size: 60px;
-            margin-left: 38%;
-            color: blue;
-        }
-
-        .text{
-            align-content: center;
-            height: 43px;
-            width: 300px;
-            border-radius: 5%;
-            font-size: 22px;
-        }
         .btn{
             align-content: center;
             height: 43px;
-            width: 220px;
+            width: 200px;
             border-radius: 5%;
             font-size: 23px;
             background-color:#D58512;
@@ -46,35 +33,27 @@
             border: none;
             cursor: pointer;
         }
-        .btn1{
+        .txt{
             align-content: center;
-            margin-left:12%;
-            margin-top: 0.5%;
             height: 43px;
             width: 50%;
-            border-radius: 5%;
-            font-size: 23px;
             background-color:ghostwhite;
             color: black;
             border: none;
+        }
+
+        .sel_info{
+            width: 150px;
+            margin-left: 90px;
+            height: 43px;
         }
         .main{
             position: absolute;
             top: 0px;
             left: 0px;
-            height: 750px;
+            height: 650px;
             width: 100%;
             background-color: #D9EDF7;
-        }
-
-        .biaoti2{
-            font-family: 微软雅黑;
-            font-size: 20px;
-            font-weight: bold;
-            border-bottom:1px dashed #CCCCCC;
-            color: #255e95;
-            align:center;
-            height:60px;
         }
     </style>
 
@@ -87,12 +66,12 @@
 
         </table>
         <div>
-            <select id="sel_info">
+            <select id="sel_info" class="form-control1 sel_info">
                 <option value="1">标题</option>
                 <option value="2">作者</option>
                 <option value="3">内容</option>
             </select>
-            <input id="content" width="70%" class="btn1" type="text" >
+            <input id="content" width="70%" class="txt" type="text" >
             <input class="btn" id="btnLogin" type="button" value="搜索" onclick="findNewsList(1)">
         </div>
 

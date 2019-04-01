@@ -16,17 +16,17 @@ public class UserInfo {
     private String email;
     private Integer sex;
     private String identity;
+    private String introduce;
     public UserInfo() {
     }
 
-    public UserInfo(String userId, String userName, String password, String phone, String email, Integer sex, String identity) {
+    public UserInfo(String userId,String userName, String phone, String email, Integer sex, String introduce) {
         this.userId = userId;
         this.userName = userName;
-        this.password = password;
         this.phone = phone;
         this.email = email;
         this.sex = sex;
-        this.identity = identity;
+        this.introduce = introduce;
     }
 
     public UserInfo(String userId, String password) {

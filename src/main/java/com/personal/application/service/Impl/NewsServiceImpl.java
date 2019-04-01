@@ -5,6 +5,7 @@ import com.personal.application.mapper.NewsMapper;
 import com.personal.application.mapper.NoticeMapper;
 import com.personal.application.pojo.News;
 import com.personal.application.pojo.Notice;
+import com.personal.application.repository.NewsRepository;
 import com.personal.application.repository.NoticeRepository;
 import com.personal.application.service.NewsService;
 import com.personal.application.util.DateTimeUtils;
@@ -19,6 +20,8 @@ public class NewsServiceImpl implements NewsService {
     private NewsMapper newsMapper;
     @Autowired
     private NoticeMapper noticeMapper;
+    @Autowired
+    private NewsRepository newsRepository;
 
     @Override
     public List<News> findNewsList(Integer newsType, Integer selConditions, String selContent, Integer startRow, Integer pageSize) {
@@ -72,6 +75,11 @@ public class NewsServiceImpl implements NewsService {
     @Override
     public Integer getIsAgree(Integer newsId, String userId) {
         return  newsMapper.getAgreeById(newsId, userId);
+    }
+
+    @Override
+    public void addNews(News news) {
+        newsMapper.addNews(news);
     }
 
 

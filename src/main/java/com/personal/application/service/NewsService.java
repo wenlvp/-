@@ -19,4 +19,6 @@ public interface NewsService {
      Integer changeAgree(Integer newsId,String userId);
 
      Integer getIsAgree(Integer newsId, String userId);
+
+     void addNews(News news);
 }

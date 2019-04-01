@@ -4,9 +4,11 @@ import com.personal.application.pojo.Employee;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface EmployeeMapper {
     @Select("<script> " +
             "select e.emp_id,e.emp_name,e.password,r.role_name role,e.phone,e.email " +

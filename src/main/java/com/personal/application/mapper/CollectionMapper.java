@@ -4,14 +4,16 @@ import com.personal.application.dto.CollectionDto;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface CollectionMapper {
     @Insert("<script>" +
-            "INSERT INTO collection ( user_id, news_id, is_collect )\n" +
+            "INSERT INTO collection ( user_id, news_id, is_collect,create_time )\n" +
             "VALUES\n" +
-            "\t( #{userId}, #{newsId}, 0 )" +
+            "\t( #{userId}, #{newsId}, 0 ,NOW())" +
             "</script>")
     Integer addCollection(@Param("newsId") Integer newsId,
                      @Param("userId") String userId);

@@ -11,6 +11,149 @@
     <script type="text/javascript" src="js/plug-in.js" ></script>
 </head>
 <body>
+<div>
+    <div style="margin-bottom: 20px;">
+    </div>
+    <div style="height: 55px;">
+        <input id="btn_clear" class="btn-con" type="button" value="清空" onclick="txtClear()">
+        <input id="btn_search" class="btn-con" type="button" value="检索" onclick="search()">
+    </div>
+    <div class="the-box">
+        <div class="table-responsive">
+            <table id="table_example" class="table" border="1" style="text-align: center;border-color: #B0B9B8;">
+                <thead class="the-box">
+                <tr >
+                    <td width="70%">通知</td>
+                    <td>时间</td>
+                    <td>编辑</td>
+                </tr>
+                </thead>
+                <tbody>
 
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div class="row ">
+                <div class="page-container"></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    var pageSize = 10;
+    var dataCount = 0;
+    $(function(){
+        findNoticeInfo(1);
+        paging();
+    });
+    function search(){
+        findNoticeInfo(1);
+        paging();
+    }
+    function findNoticeInfo(pageIndex){
+        $.ajax({
+            type:"post",
+            url:"http://127.0.0.1:8080/project/user/findNoticeBy",
+            async:false,
+            xhrFields: {
+                withCredentials: true
+            },
+            dataType:"json",
+            data:{
+                pageSize : pageSize,
+                pageIndex :pageIndex
+            },
+            success:function(data){
+                $("#table_example tbody").empty();
+                var tbody = "";
+                var backColor = "";
+                if (data.success){
+                    var no= pageSize *(pageIndex-1)+1
+                    $.each(data.data, function(i,o) {
+                        if(i%2==0){
+                            backColor="#E0FFFF";
+                        }else{
+                            backColor = "white";
+                        }
+                        if(i < data.data.length - 1){
+                            tbody += "<tr style='background-color:"+ backColor+"'><td width='70%'>";
+                            tbody += "<a id='" + o.userName + "'></a>"
+                            tbody += o.message + "&nbsp"+ o.title +"</td>";
+                            tbody += "<td>" + getDate(o.createTime)+ "</td>";
+                            if(o.readFlg == 0){
+                                tbody += "<td ><a onclick='updateNoticeFlag("+ o.id+")'>阅读</a></td>";
+                            }else{
+                                tbody += "<td ><a >已阅读</a></td>";
+                            }
+                            tbody += "</tr>";
+                        }else{
+                            dataCount = parseInt(o.id);
+
+                        }
+                    });
+                }
+                $("#table_example tbody").append(tbody);
+            },
+            error: function() {
+                $.Pop("查询发生异常",'alert',false);
+            }
+
+        });
+    }
+    function paging(){
+        const pager = new Pagination('.page-container', {
+            pageSize: pageSize,
+            autoLoad: true,
+            unit: '条',
+            toPage: function (index, _pageSize) {
+                // 设置记录总数，用于生成分页HTML内容
+                if (index === 0 || _pageSize)
+                    this.updateCount(dataCount, _pageSize)
+                if(_pageSize !=null){
+                    pageSize = parseInt(_pageSize);
+                }
+                findNoticeInfo(index+1);
+            }
+        })
+
+    }
+    function updateNoticeFlag(id){
+        $.ajax({
+            type:"post",
+            url:"http://127.0.0.1:8080/project/notice/updateFlag",
+            async:false,
+            xhrFields: {
+                withCredentials: true
+            },
+            dataType:"json",
+            data:{
+                id : id
+            },
+            success:function(data){
+                if (data.success){
+                    paging();
+                }
+
+            },
+            error: function() {
+                $.Pop("发生异常",'alert',false);
+            }
+
+        });
+    }
+    function txtClear(){
+
+    }
+    function getDate(time){
+        var date = new Date(time);
+        var year = date.getFullYear();
+        var month = date.getMonth()+1;
+        var day = date.getDate();
+        var returnTime = year + "-" + month+"-" + day;
+        return returnTime;
+    }
+</script>
 </body>
 </html>

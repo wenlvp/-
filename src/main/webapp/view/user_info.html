@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
+    <script type="text/javascript" src="js/plug-in.js" ></script>
+    <title>Title</title>
+    <style>
+        .div_txt
+        {
+            margin: 22px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div style="position: absolute; left: 30%;" >
+
+        <div class="div_txt">
+            <label style="margin-left: 25px;">&nbsp;昵&nbsp;称:</label>
+            <input class="form-control1" id="txt_emp_name" type="text" >
+            <label id="lab_emp_name" style="color: red;"></label>
+        </div>
+        <div class="div_txt">
+            <label style="margin-left: 25px;">&nbsp;性&nbsp;别:</label>
+            <select class="form-control1"  id="sel_sex" style="width: 270px;height: 39px;"  >
+                <option value="0">男</option>
+                <option value="1">女</option>
+            </select>
+            <label></label>
+        </div>
+        <div class="div_txt">
+            <label style="margin-left: 15px;">&nbsp;手机号:</label>
+            <input class="form-control1" id="txt_phone" type="text" placeholder="请输入手机号" onchange="confirmPhone(this)"/>
+            <label id="lab_phone" style="color: red;"></label>
+        </div>
+        <div class="div_txt">
+            <label style="margin-left: 25px;">&nbsp;邮&nbsp;箱:</label>
+            <input class="form-control1" id="txt_email" type="text" placeholder="请输入邮箱" onchange="confirmEmail(this)"/>
+
+        </div>
+        <div class="div_txt">
+            <label style="margin-left: 25px;">&nbsp;简&nbsp;介:</label>
+            <input class="form-control1" id="txt_introduce" type="text" placeholder="请输入简介" onchange="confirmEmail(this)"/>
+
+        </div>
+        <div class="div_txt" style="margin-top:28px;">
+            <input class="btn-sure" style="margin-left:135px;" id="btn_change" type="button" value="保存" onClick="conf()"/>
+        </div>
+
+    </div>
+</div>
+<script>
+    $(function(){
+        searchUserInfoById();
+    });
+    function conf(){
+        var success= true;
+        if(isEmpty($("#txt_emp_name").val())==true){
+            $("#lab_emp_name").text("昵称必填");
+            success= false;
+        }
+
+        if(success)
+        {
+            $.Pop('确定保存吗','confirm',function(){ changeUserInfo()})
+        }
+
+    }
+    var regPhone = /^1[34578]\d{9}$/;
+    var regEmail = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+    //var regEmail = /^1[34578]\d{9}$/;
+    function confirmPhone(obj){
+
+        if(isEmpty(obj)==false){
+            if(regPhone.test(obj.value)==false){
+                $("#lab_phone").text("手机号格式不正确");
+            }else{
+                $("#lab_phone").text("");
+            }
+        }
+    }
+    function confirmEmail(obj){
+
+        if(isEmpty(obj)==false){
+            if(regEmail.test(obj.value)==false){
+                $("#lab_email").text("邮箱格式不正确");
+            }else{
+                $("#lab_email").text("");
+            }
+        }
+    }
+    function changeUserInfo(){
+        $.ajax({
+            type:"post",
+            url:"http://127.0.0.1:8080/project/user/change",
+            async:true,
+            xhrFields: {
+                withCredentials: true
+            },
+            dataType:"json",
+            data :{
+                userName : $("#txt_emp_name").val(),
+                phone : $("#txt_phone").val(),
+                email : $("#txt_email").val(),
+                sex:$("#sel_sex").val(),
+                introduce:$("#txt_introduce").val()
+            },
+            success:function(data){
+                if(data.success){
+                    $.Pop("修改成功",'alert',false)
+
+                }else{
+                    $.Pop(data.errMessage,'alert',false)
+                }
+            },
+            error:function(){
+                $.Pop("新增发生异常",'alert',false);
+            }
+        });
+    }
+    function searchUserInfoById(){
+        $.ajax({
+            type:"post",
+            url:"http://127.0.0.1:8080/project/user/searchById",
+            async:true,
+            dataType:"json",
+            xhrFields: {
+                withCredentials: true
+            },
+            data:{
+
+            },
+            success:function(data){
+                if(data.success){
+                    var info = data.data;
+                    $("#txt_emp_name").val(info.userName);
+                    $("#txt_phone").val(info.phone);
+                    $("#txt_email").val(info.email);
+                    $("#sel_sex").val(info.sex);
+                    $("#txt_introduce").val(info.introduce);
+                }
+
+            },
+            error: function() {
+                $.Pop("查询员工信息异常",'alert',false);
+            }
+
+        });
+    }
+    function isEmpty(obj){
+        if(obj==null || obj==""){
+            return true;
+        }else{
+            return false;
+        }
+    }
+</script>
+</body>
+</html>

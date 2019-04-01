@@ -16,11 +16,10 @@ public class Comment {
     private String comments;
     private Date createTime;
 
-    public Comment(Integer newsId, String userId, String comments, Date createTime) {
+    public Comment(Integer newsId, String userId, String comments) {
         this.newsId = newsId;
         this.userId = userId;
         this.comments = comments;
-        this.createTime = createTime;
     }
 
     public Comment() {
