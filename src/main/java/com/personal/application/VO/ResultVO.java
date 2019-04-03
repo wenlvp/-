@@ -29,5 +29,9 @@ public class ResultVO<T> {
         this.success = true;
         this.message = SUCCESS_MSG;
     }
+    public void beSuccess(String message){
+        this.success = true;
+        this.message = message;
+    }
 
 }

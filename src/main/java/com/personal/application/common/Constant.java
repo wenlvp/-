@@ -2,6 +2,7 @@ package com.personal.application.common;
 
 public class Constant {
     public static String LOGIN_ID = "userId";
+    public static String EMP_ID = "empId";
 
     public static String TITLE = "1";
     public static String AUTOR = "2";
@@ -9,5 +10,6 @@ public class Constant {
 
     public static String NEWS_AGREE_MSG = "已被点赞";
     public static String NEWS_COMMENT_MSG = "已被收藏";
-    public static String NEWS_BACK_MSG = "已被退回";
+    public static String NEWS_BACK_MSG = "退回";
+    public static String NEWS_AUDIT_MSG = "审批";
 }

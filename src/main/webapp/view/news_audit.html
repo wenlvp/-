@@ -5,9 +5,11 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/page_register.css" />
+    <link rel="stylesheet" href="css/hwLayer.css"/>
     <script type="text/javascript" src="js/pagination.js" ></script>
     <script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
     <script type="text/javascript" src="js/plug-in.js" ></script>
+    <script type="text/javascript" src="js/popPage.js"></script>
     <title>Title</title>
 </head>
 <body>
@@ -43,12 +45,32 @@
         </div>
     </div>
 </div>
+<div class="hw-overlay" id="hw-layer">
+    <div class="hw-layer-wrap">
+        <span class="glyphicon glyphicon-remove hwLayer-close">X</span>
+        <div class="row">
+            <div class="col-md-3 col-sm-12 hw-icon">
+                <i class="glyphicon glyphicon-info-sign"></i>
+            </div>
+            <div class="col-md-9 col-sm-12">
+                <p id="p_content">
+                </p>
+                <button class="btn btn-success hwLayer-ok" onclick="updateAuditFlg(1)">审 批</button>
+                <button class="btn btn-warning hwLayer-cancel" onclick="updateAuditFlg(2)">退 回</button>
+            </div>
+        </div>
+    </div>
+</div>
+<a id="hide" class="btn btn-info btn-lg show-layer" data-show-layer="hw-layer" role="button" style="display: none">点击弹出层</a>
+<input type="text" id="hid_txt">
 <script>
     var pageSize = 10;
     var dataCount = 0;
+
     $(function(){
         findAuditInfo(1);
         paging();
+
     });
     function search(){
         findAuditInfo(1);
@@ -81,7 +103,7 @@
                         }
                         if(i < data.data.length - 1){
                             tbody += "<tr style='background-color:"+ backColor+"'>";
-                            tbody += "<td><nobr><a href=''>"+ (no+i)+"</a></nobr></td>";
+                            tbody += "<td><nobr><a onclick='getNewsInfo("+o.newsId+")'>"+ (no+i)+"</a></nobr></td>";
                             tbody += '<td><nobr>' + o.title + '</nobr></td>';
                             tbody += '<td><nobr>' + o.userId+ '</nobr></td>';
                             tbody += '<td><nobr>' + o.newsTypeName + '</nobr></td>';
@@ -100,6 +122,60 @@
                 $.Pop("查询发生异常",'alert',false);
             }
 
+        });
+    }
+    function updateAuditFlg(flag){
+        $.ajax({
+            type:"post",
+            url:"http://127.0.0.1:8080/project/news/changeFlg",
+            xhrFields: {
+                withCredentials: true
+            },
+            dataType:"json",
+            data:{
+                flag : flag,
+                newsId: $("#hid_txt").val()
+            },
+            success:function(data){
+                if (data.success){
+                    paging();
+                    $.Pop(data.message,'alert',false);
+
+
+                }
+
+            },
+            error: function() {
+                $.Pop("查询发生异常",'alert',false);
+            }
+
+        });
+    }
+    function getNewsInfo(newsId){
+        $.ajax({
+            type:"post",
+            url: "http://127.0.0.1:8080/project/news/findBy",
+            async:false,
+            xhrFields: {
+                withCredentials: true
+            },
+            data:{
+                newsId : newsId,
+            },
+            success:function(data){
+                if (data.success){
+                    var info = data.data[0];
+                    $("#p_content").text(info.content);
+                    $("#hide").click();
+                    $("#hid_txt").val(info.newsId);
+                }else{
+                    $.Pop("错误",'alert',false);
+                }
+
+            },
+            error: function() {
+                $.Pop("发生异常",'alert',false);
+            }
         });
     }
     function paging(){
@@ -133,6 +209,46 @@
         var returnTime = year + "-" + month+"-" + day;
         return returnTime;
     }
+    //触发弹出层
+    $('.show-layer').on('click',  function() {
+        var layerid = $(this).data('show-layer');
+        showLayer(layerid);
+    });
+    //展示层
+    function showLayer(id){
+        var layer = $('#'+id),
+            layerwrap = layer.find('.hw-layer-wrap');
+        layer.fadeIn();
+        //屏幕居中
+        layerwrap.css({
+            'margin-top': -layerwrap.outerHeight()/2
+        });
+    }
+
+    //隐藏层
+    function hideLayer(){
+        $('.hw-overlay').fadeOut();
+    }
+
+    $('.hwLayer-ok,.hwLayer-cancel,.hwLayer-close').on('click', function() {
+        hideLayer();
+    });
+
+
+
+    //点击或者触控弹出层外的半透明遮罩层，关闭弹出层
+    $('.hw-overlay').on('click',  function(event) {
+        if (event.target == this){
+            hideLayer();
+        }
+    });
+
+    //按ESC键关闭弹出层
+    $(document).keyup(function(event) {
+        if (event.keyCode == 27) {
+            hideLayer();
+        }
+    });
 </script>
 </body>
 </html>

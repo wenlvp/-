@@ -1,5 +1,6 @@
 package com.personal.application.service.Impl;
 
+import com.personal.application.VO.ResultVO;
 import com.personal.application.common.Constant;
 import com.personal.application.mapper.NewsMapper;
 import com.personal.application.mapper.NoticeMapper;
@@ -81,6 +82,23 @@ public class NewsServiceImpl implements NewsService {
     public void addNews(News news) {
         newsMapper.addNews(news);
     }
+
+    @Override
+    public ResultVO updateAuditFlag(Integer newsId, Integer flag, String userId) {
+        ResultVO resultVO = new ResultVO();
+        if (flag ==1){
+            newsMapper.updateAuditFlag(newsId);
+            noticeMapper.addNotice(new Notice(Constant.NEWS_AUDIT_MSG,newsId,userId));
+            resultVO.beSuccess("审核成功");
+        }else{
+            newsMapper.deleteNews(newsId);
+            noticeMapper.addNotice(new Notice(Constant.NEWS_BACK_MSG,newsId,userId));
+            resultVO.beSuccess("退回成功");
+        }
+        return  resultVO;
+    }
+
+
 
 
 }

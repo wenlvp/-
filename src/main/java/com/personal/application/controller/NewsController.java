@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -102,4 +101,12 @@ public class NewsController {
         return  resultVO;
     }
 
+    @PostMapping("changeFlg")
+    public ResultVO changeFlg(@RequestParam(value = "newsId") Integer newsId,
+                              @RequestParam(value = "flag") Integer flag,
+                              HttpSession session){
+        ResultVO resultVO =  newsService.updateAuditFlag(newsId,flag,session.getAttribute(Constant.EMP_ID).toString());
+
+        return  resultVO;
+    }
 }

@@ -1,6 +1,7 @@
 package com.personal.application.service;
 
 
+import com.personal.application.VO.ResultVO;
 import com.personal.application.pojo.News;
 
 import java.util.List;
@@ -21,4 +22,7 @@ public interface NewsService {
      Integer getIsAgree(Integer newsId, String userId);
 
      void addNews(News news);
+
+     ResultVO updateAuditFlag(Integer newsId, Integer flag, String userId);
+
 }

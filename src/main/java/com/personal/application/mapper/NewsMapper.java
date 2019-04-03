@@ -141,6 +141,7 @@ public interface NewsMapper {
             "            FROM\n" +
             "    news \n" +
             "\t\t where is_audit = 1" +
+            " and is_del=0" +
             "</script>")
     List<News> findAuditNewsList(@Param("startRow") Integer startRow,
                                  @Param("pageSize") Integer pageSize);
@@ -263,4 +264,20 @@ public interface NewsMapper {
             "\t( #{title}, #{newsType},#{userId}, #{content}, 0, 0, 0, 1, 0, NOW( ) )" +
             "</script>")
     Integer addNews(News news);
+
+    @Update("<script>" +
+            " UPDATE news \n" +
+            " SET is_audit = 0 \n" +
+            "WHERE\n" +
+            "\tnews_id = #{newsId}" +
+            "</script>")
+    Integer updateAuditFlag(Integer newsId);
+
+    @Update("<script>" +
+            "UPDATE news \n" +
+            "SET is_del = 1 \n" +
+            "WHERE\n" +
+            "\tnews_id = #{newsId}" +
+            "</script>")
+    Integer deleteNews(Integer newsId);
 }

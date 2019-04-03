@@ -80,7 +80,8 @@
             },
             success:function(data){
                 if (data.success){
-
+                    $.Pop("发表成功",'alert',false);
+                    clear();
                 }else{
                     $.Pop("错误",'alert',false);
                 }
@@ -90,6 +91,10 @@
                 $.Pop("发生异常",'alert',false);
             }
         });
+    }
+    function clear(){
+         $("#lab_title").val(""),
+         $("#p_content").val("")
     }
 </script>
 
