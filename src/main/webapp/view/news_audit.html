@@ -45,24 +45,23 @@
         </div>
     </div>
 </div>
-<div class="hw-overlay" id="hw-layer">
-    <div class="hw-layer-wrap">
-        <span class="glyphicon glyphicon-remove hwLayer-close">X</span>
-        <div class="row">
-            <div class="col-md-3 col-sm-12 hw-icon">
-                <i class="glyphicon glyphicon-info-sign"></i>
-            </div>
-            <div class="col-md-9 col-sm-12">
-                <p id="p_content">
+<div class="hw-overlay" id="hw-layer" >
+    <div class="hw-layer-wrap" >
+        <span class="glyphicon hwLayer-close">X</span>
+        <div class="row" style="margin-top: -76px ;" >
+            <div class="col-md-9 col-sm-12" style="margin-left: 60px;overflow-y:scroll">
+                <p id="p_content" style="height: 160px" >
                 </p>
-                <button class="btn btn-success hwLayer-ok" onclick="updateAuditFlg(1)">审 批</button>
+            </div>
+            <div class="col-md-9 col-sm-12" style="margin-top: 50px">
+                <button class="btn btn-success hwLayer-ok" onclick="updateAuditFlg(1)" style="margin-left: 140px">审 批</button>
                 <button class="btn btn-warning hwLayer-cancel" onclick="updateAuditFlg(2)">退 回</button>
             </div>
         </div>
     </div>
 </div>
 <a id="hide" class="btn btn-info btn-lg show-layer" data-show-layer="hw-layer" role="button" style="display: none">点击弹出层</a>
-<input type="text" id="hid_txt">
+<input style="display: none" type="text" id="hid_txt">
 <script>
     var pageSize = 10;
     var dataCount = 0;

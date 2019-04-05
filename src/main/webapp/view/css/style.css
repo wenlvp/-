@@ -164,3 +164,9 @@
 .title-style{
 	font-size: 35px;
 }
+.td-left{
+margin-left:100px;
+}
+.border-color{
+	border-bottom-color: #9f9f9f;
+}

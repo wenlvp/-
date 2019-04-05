@@ -124,6 +124,7 @@ public interface NewsMapper {
             "\tAND d.dict_type = 'news'" +
 
             " where n.is_audit = 1 " +
+            " and is_del= 0" +
             " order by n.pub_time desc " +
             " limit #{startRow},#{pageSize}\n ) t" +
             "  \t\t\t\t\t union all\n" +
@@ -141,7 +142,7 @@ public interface NewsMapper {
             "            FROM\n" +
             "    news \n" +
             "\t\t where is_audit = 1" +
-            " and is_del=0" +
+            " and is_del= 0" +
             "</script>")
     List<News> findAuditNewsList(@Param("startRow") Integer startRow,
                                  @Param("pageSize") Integer pageSize);

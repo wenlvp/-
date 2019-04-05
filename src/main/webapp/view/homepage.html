@@ -20,7 +20,7 @@
             padding: 2px 3px 2px 3px;
             line-height: 1.42857143;
             vertical-align: middle;
-            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
         }
         .btn{
             align-content: center;
@@ -77,9 +77,8 @@
 
 
       <div>
-          <table id="table_example" class="table_home" style="text-align: center;border: 0px">
-              <tbody style="border: 0px">
-
+          <table id="table_example" class="table_home" style="text-align: left;margin-left: 100px;width: 666px;">
+              <tbody style="border-collapse: collapse;">
               </tbody>
           </table>
       </div>
@@ -164,12 +163,12 @@
                     $.each(info, function(i,o) {
                         if(i < info.length -1){
                             tbody += "<tr>";
-                            tbody += "<td rowspan=\"4\">"+o.newsPicture+"</td>"
-                            tbody += "<td><a style='cursor:pointer;text-decoration:none;' target='_blank' href='news_detail.html?action="+o.newsId+"'>" + o.title + "</a></td>";
+                            // tbody += "<td rowspan=\"4\">"+o.newsPicture+"</td>"
+                            tbody += "<td><a class='td-left' style='cursor:pointer;text-decoration:none;' target='_blank' href='news_detail.html?action="+o.newsId+"'>" + o.title + "</a></td>";
                             tbody += "</tr>" ;
-                            tbody += "<tr><td><p>"+getDate(o.pubTime)+"-"+o.newsTypeName +"-"+o.userId+"- 阅"+o.readNum+"</p></td></tr>" ;
-                            tbody += "<tr><td rowspan=\"2\"><p>"+o.content+"</p></td></tr>" ;
-                            tbody +="<tr><td></td></tr>"
+                            tbody += "<tr><td><p class='td-left'>"+getDate(o.pubTime)+"-"+o.newsTypeName +"-"+o.userId+"- 阅"+o.readNum+"</p></td></tr>" ;
+                            tbody += "<tr><td rowspan=\"2\"><p class='td-left'>"+o.content+"</p></td></tr>" ;
+                            tbody +="<tr ><td></td></tr>"
 
                         }else{
                             dataCount = parseInt(o.newsId);
