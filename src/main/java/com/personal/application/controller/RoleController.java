@@ -84,6 +84,21 @@ public class RoleController {
         }
 
     }
+    @PostMapping("menucode2")
+    public ResultVO searchMenuCode2(@RequestParam("roleId") String roleId){
+        ResultVO resultVO = new ResultVO();
+        try{
+            Optional<Employee> empOp = employeeService.findEmpById(roleId);
+            List<EmpMst> empMstList = roleService.findMenuCodeBy(roleId);
+            resultVO.setData(empMstList);
+            resultVO.setSuccess(true);
+            return resultVO;
+        }catch(Exception ex){
+            resultVO.setMessage(ex.toString());
+            return resultVO;
+        }
+
+    }
     @PostMapping("/del")
     public ResultVO delRole(@RequestParam(value = "roleId") String roleId){
         ResultVO resultVO = new ResultVO();
