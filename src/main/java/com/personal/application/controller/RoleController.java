@@ -1,9 +1,12 @@
 package com.personal.application.controller;
 
 import com.personal.application.VO.ResultVO;
+import com.personal.application.common.Constant;
 import com.personal.application.pojo.EmpMst;
+import com.personal.application.pojo.Employee;
 import com.personal.application.pojo.Privilege;
 import com.personal.application.pojo.Role;
+import com.personal.application.service.EmployeeService;
 import com.personal.application.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,6 +23,8 @@ import java.util.Optional;
 public class RoleController {
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private EmployeeService employeeService;
 
     @PostMapping("search")
     public ResultVO getRole(){
@@ -64,10 +70,11 @@ public class RoleController {
         return resultVO;
     }
     @PostMapping("menucode")
-    public ResultVO searchMenuCode(@RequestParam(value = "roleId") String roleId  ){
+    public ResultVO searchMenuCode(HttpSession session){
         ResultVO resultVO = new ResultVO();
         try{
-            List<EmpMst> empMstList = roleService.findMenuCodeBy(roleId);
+            Optional<Employee> empOp = employeeService.findEmpById(session.getAttribute(Constant.EMP_ID).toString());
+            List<EmpMst> empMstList = roleService.findMenuCodeBy(empOp.get().getRole());
             resultVO.setData(empMstList);
             resultVO.setSuccess(true);
             return resultVO;

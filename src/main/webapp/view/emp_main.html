@@ -94,6 +94,8 @@
 </div>
 <script>
     $(function(){
+        lock();
+        judgeRole();
     });
     $(".list_dt").on("click",function () {
         $('.list_dd').stop();
@@ -108,6 +110,55 @@
         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
         var r = window.location.search.substr(1).match(reg);
         if(r!=null)return  unescape(r[2]); return null;
+    }
+    function judgeRole(){
+        $.ajax({
+            type:"post",
+            url:"http://127.0.0.1:8080/project/role/menucode",
+            async:true,
+            xhrFields: {
+                withCredentials: true
+            },
+            data:{
+            },
+            success:function(data){
+                if (data.success){
+                    var info = data.data;
+                    $.each(info, function(i,o) {
+                        $("#"+o.menuCode).css("display","block");
+                    });
+
+                }else{
+                    $.Pop("错误",'alert',false);
+                }
+
+            },
+            error: function() {
+                $.Pop("发生异常",'alert',false);
+            }
+        });
+    }
+    function lock(){
+     	$("#roleList").css("display","none");
+     	$("#privilege").css("display","none");
+     	$("#empInfo").css("display","none");
+     	$("#addEmp").css("display","none");
+     	$("#auditNews").css("display","none");
+     	$("#manageNews").css("display","none");
+//      	$("#managementArea").css("display","none");
+//
+//      	$("#rentHouseInfo").css("display","none");
+//      	$("#rentOffice").css("display","none");
+//      	$("#leaseInfo").css("display","none");
+//      	$("#leaseHouse").css("display","none");
+//      	$("#leaseOffice").css("display","none");
+//      	$("#throwLease").css("display","none");
+//      	$("#chargeList").css("display","none");
+//
+//      	$("#remendCharge").css("display","none");
+//      	$("#repairRequest").css("display","none");
+//      	$("#repair").css("display","none");
+//      	$("#repairHistory").css("display","none");
     }
 </script>
 </body>
