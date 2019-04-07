@@ -13,35 +13,34 @@
 <body>
 <div class="div-center">
     <div class="div-article">
-        <div>
+        <div class="mar-l1">
             <label id="lab_title" class="title-style"><b></b></label>
         </div>
-        <div>
+        <div class="mar-l1">
             <label id="lab_pub_time"></label>
             <label id="lab_news_type"></label>
         </div>
-        <div>
+        <div class="mar-l1">
             <label id="lab_author"></label>
         </div>
-        <div>
-            <p id="p_content"></p>
+        <div style="overflow-y:scroll" class="mar-l1" style="margin-top: 33px">
+            <p id="p_content" style="height: 320px;"></p>
         </div>
         <div>
-            <button id="btn_agree" style="display: none" onclick="changeAgreeNum(newsId)">赞同</button>
-            <button id="btn_cancel" style="display: none;" onclick="changeAgreeNum(newsId)">已赞同</button>
-            <label >点赞数</label>
-            <label id="agree_num"></label>
-            <button id="btn_collect" style="display: none" onclick="changeCollection(newsId)">收藏</button>
-            <button id="btn_cancel_collect" style="display: none;" onclick="changeCollection(newsId)">已收藏</button>
-            <label >阅读量</label>
-            <label id="read_num"></label>
-            <a onclick="openCommnet()">评论</a>
+            <label class="lab" id="read_num" class="flo"></label>
+            <button  id="btn_agree" style="display: none;" onclick="changeAgreeNum(newsId)" class="btn-con3 flo">赞同</button>
+            <button id="btn_cancel" style="display: none;" onclick="changeAgreeNum(newsId)" class="btn-con3 flo">已赞同</button>
+            <label id="agree_num" class="lab flo"></label>
+            <button id="btn_collect" style="display: none" onclick="changeCollection(newsId)" class="btn-con3 flo">收藏</button>
+            <button id="btn_cancel_collect" style="display: none;" onclick="changeCollection(newsId)" class="btn-con3 flo">已收藏</button>
+
+            <a onclick="openCommnet()" class="lab flo">评论</a>
         </div>
     </div>
-    <div class="div-comment" style="display: none" id="div_comment">
+    <div class="div-comment" style="display: none;" id="div_comment">
         <table id="tab_comment">
             <thead>
-            <tr><input id="txt_comment" type="text"><button onclick="addComment()">评论</button></tr>
+            <tr><td><input id="txt_comment" type="text" class="form-control1 div-w"><button onclick="addComment()" class="btn-con2" style="margin-left: 13px">评论</button></td></tr>
             </thead>
             <tbody>
             </tbody>
@@ -128,8 +127,8 @@
                     $("#lab_news_type").text(info.newsTypeName);
                     $("#lab_author").text(info.userId);
                     $("#p_content").text(info.content);
-                    $("#read_num").text(info.readNum);
-                    $("#agree_num").text(info.agreeNum);
+                    $("#read_num").text("阅读量"+info.readNum);
+                    $("#agree_num").text("点赞数" + info.agreeNum);
 
                 }else{
                     $.Pop("错误",'alert',false);
@@ -226,8 +225,9 @@
               var tbody = "";
               if (data.success){
                   $.each(data.data, function(i,o) {
-                      tbody += "<tr><td>"+ o.userId+"</td></tr>";
-                      tbody += "<tr><td>"+ o.comments+"</td></tr>";
+                      tbody += "<tr><td>用户："+ o.userId+"</td></tr>";
+                      tbody += "<tr><td>评论："+ o.comments+"</td></tr>";
+
                   });
               }
               $("#tab_comment tbody").append(tbody);

@@ -9,25 +9,39 @@
     <script type="text/javascript" src="js/pagination.js" ></script>
     <script type="text/javascript" src="js/jquery-3.3.1.js" ></script>
     <script type="text/javascript" src="js/plug-in.js" ></script>
+    <style>
+        .div-main{
+            margin-left: 400px;
+            width: 70%;
+        }
+        .div_txt
+        {
+            margin: 22px;
+            font-size: 20px;
+        }
+        .div-w{
+            width: 466px;
+        }
+    </style>
 </head>
 <body>
-<div>
+<div class="div-main">
     <div class="div-article">
-        <div>
-            <label>标题</label><input id="lab_title" type="text"/>
+        <div class="div_txt">
+            <label>标题:</label><input id="lab_title" type="text" class="form-control1 div-w" >
         </div>
-        <div>
-            <select id="news_type">
+        <div class="div_txt">
+            <label>类型:</label><select id="news_type" class="form-control1 div-w">
 
             </select>
-            <input id="lab_news_type" type="text"/>
+
         </div>
-        <div>
-            <label>内容</label> <input id="p_content" type="text"/>
+        <div class="div_txt">
+            <label>内容:</label> <input id="p_content" type="text" class="form-control1 div-w" style="height: 280px;text-wrap: normal" />
         </div>
     </div>
     <div class="div-comment">
-<button onclick="publicNews()">发表</button>
+     <button onclick="publicNews()" class="btn-sure" style="margin-left: 188px">发表</button>
     </div>
 </div>
 <script>

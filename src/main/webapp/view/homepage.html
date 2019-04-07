@@ -74,8 +74,6 @@
             <input id="content" width="70%" class="txt" type="text" >
             <input class="btn" id="btnLogin" type="button" value="搜索" onclick="findNewsList(1)">
         </div>
-
-
       <div>
           <table id="table_example" class="table_home" style="text-align: left;margin-left: 100px;width: 666px;">
               <tbody style="border-collapse: collapse;">
@@ -162,12 +160,18 @@
                     var info = data.data;
                     $.each(info, function(i,o) {
                         if(i < info.length -1){
+                            var content = "";
+                            if(o.content.length<10){
+                                content=o.content;
+                            }else{
+                                content = o.content.substring(0,10)+"...";
+                            }
                             tbody += "<tr>";
                             // tbody += "<td rowspan=\"4\">"+o.newsPicture+"</td>"
                             tbody += "<td><a class='td-left' style='cursor:pointer;text-decoration:none;' target='_blank' href='news_detail.html?action="+o.newsId+"'>" + o.title + "</a></td>";
                             tbody += "</tr>" ;
                             tbody += "<tr><td><p class='td-left'>"+getDate(o.pubTime)+"-"+o.newsTypeName +"-"+o.userId+"- 阅"+o.readNum+"</p></td></tr>" ;
-                            tbody += "<tr><td rowspan=\"2\"><p class='td-left'>"+o.content+"</p></td></tr>" ;
+                            tbody += "<tr><td rowspan=\"2\"><p class='td-left'>"+content+"</p></td></tr>" ;
                             tbody +="<tr ><td></td></tr>"
 
                         }else{
